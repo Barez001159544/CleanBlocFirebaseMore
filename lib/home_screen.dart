@@ -1,6 +1,10 @@
 import "package:cloud_firestore/cloud_firestore.dart";
+import "package:crud/blocs/notes_bloc.dart";
+import "package:crud/blocs/notes_events.dart";
+import "package:crud/blocs/notes_state.dart";
 import "package:crud/firestore_services.dart";
 import "package:flutter/material.dart";
+import "package:flutter_bloc/flutter_bloc.dart";
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,7 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ElevatedButton(
                   onPressed: () {
                     if(docID==null) {
-                      firestoreServices.writeNote(txtController.text);
+                      BlocProvider.of<NotesBloc>(context).add(WriteNotes(note: txtController.text));
+                      // firestoreServices.writeNote(txtController.text);
                     }else{
                       firestoreServices.updateNote(docID, txtController.text);
                     }
@@ -47,45 +52,58 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: openDialog,
         child: Icon(Icons.add),
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: firestoreServices.readNotes(),
-        builder: (BuildContext context,
-            AsyncSnapshot<QuerySnapshot<Object?>> snapshot) {
-          if (snapshot.hasData) {
-            List notesList = snapshot.data!.docs;
-            return ListView.builder(
-              itemCount: notesList.length,
-                itemBuilder: (context, index) {
-              DocumentSnapshot documentSnapshot = notesList[index];
-              String documentID = documentSnapshot.id;
-              Map<String, dynamic> data =
-                  documentSnapshot.data() as Map<String, dynamic>;
-              String noteTxt = data['note'];
-              return ListTile(
-                title: Text(noteTxt),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      onPressed: (){
-                        openDialog(docID: documentID);
-                        },
-                      icon: Icon(Icons.settings_rounded),
-                    ),
-                    SizedBox(width: 5,),
-                    IconButton(
-                      onPressed: (){
-                        firestoreServices.deleteNote(documentID);
-                      },
-                      icon: Icon(Icons.delete),
-                    ),
-                  ],
-                ),
-              );
-            });
-          } else {
-            return Text("No Notes...");
+      body: BlocConsumer<NotesBloc, NotesState>(
+        listener: (context, state){
+          //
+        },
+        builder: (context, state){
+          if(state is NotesInitial || state is NotesLoading){
+            return const Center(child: Text("Notes LOADING"),);
           }
+          if(state is NotesFailed){
+            return const Center(child: Text("Notes FAILED"));
+          }
+          return StreamBuilder<QuerySnapshot>(
+            stream: firestoreServices.readNotes(),
+            builder: (BuildContext context,
+                AsyncSnapshot<QuerySnapshot<Object?>> snapshot) {
+              if (snapshot.hasData) {
+                List notesList = snapshot.data!.docs;
+                return ListView.builder(
+                    itemCount: notesList.length,
+                    itemBuilder: (context, index) {
+                      DocumentSnapshot documentSnapshot = notesList[index];
+                      String documentID = documentSnapshot.id;
+                      Map<String, dynamic> data =
+                      documentSnapshot.data() as Map<String, dynamic>;
+                      String noteTxt = data['note'];
+                      return ListTile(
+                        title: Text(noteTxt),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              onPressed: (){
+                                openDialog(docID: documentID);
+                              },
+                              icon: Icon(Icons.settings_rounded),
+                            ),
+                            SizedBox(width: 5,),
+                            IconButton(
+                              onPressed: (){
+                                firestoreServices.deleteNote(documentID);
+                              },
+                              icon: Icon(Icons.delete),
+                            ),
+                          ],
+                        ),
+                      );
+                    });
+              } else {
+                return Text("No Notes...");
+              }
+            },
+          );
         },
       ),
     );
