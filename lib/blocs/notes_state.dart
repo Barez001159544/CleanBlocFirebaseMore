@@ -1,9 +1,9 @@
 abstract class NotesState{}
 
-class NotesInitial extends NotesState{}
+class WriteNotesInitial extends NotesState{}
 
-class NotesLoading extends NotesState{}
+class WriteNotesLoading extends NotesState{}
 
-class NotesFailed extends NotesState{}
+class WriteNotesFailed extends NotesState{}
 
-class NotesSuccess extends NotesState{}
+class WriteNotesSuccess extends NotesState{}

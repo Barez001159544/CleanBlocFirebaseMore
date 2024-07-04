@@ -6,15 +6,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class NotesBloc extends Bloc<NotesEvents, NotesState>{
   final FirestoreServices firestoreServices;
 
-  NotesBloc({required this.firestoreServices}):super(NotesInitial()){
+  NotesBloc({required this.firestoreServices}):super(WriteNotesInitial()){
     on<WriteNotes>((event, emit) async{
-      emit(NotesLoading());
+      emit(WriteNotesLoading());
       final response= await firestoreServices.writeNote(event.note);
       response.fold(
-          (l)=> emit(NotesFailed()),
-          (r){
-            emit(NotesSuccess());
-          }
+          (l)=> emit(WriteNotesFailed()),
+          (r)=>emit(WriteNotesSuccess())
       );
     });
   }

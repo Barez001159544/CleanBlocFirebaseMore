@@ -1,13 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
 class FirestoreServices{
 
   final CollectionReference notes= FirebaseFirestore.instance.collection("notes");
 
-  Future<dynamic> writeNote(String txt) async{
-    return notes.add({
-      "note": txt,
-      "timestamp": Timestamp.now()
-    });
+  Future<Either<Exception, dynamic>> writeNote(String txt) async{
+    try{
+      return right(notes.add({
+        "note": txt,
+        "timestamp": Timestamp.now()
+      }));
+    }catch(e){
+      print(e);
+      return left(Exception(e.toString()));
+    }
   }
 
   Stream<QuerySnapshot<Object?>> readNotes(){

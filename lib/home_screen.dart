@@ -57,10 +57,10 @@ class _HomeScreenState extends State<HomeScreen> {
           //
         },
         builder: (context, state){
-          if(state is NotesInitial || state is NotesLoading){
+          if(state is WriteNotesInitial || state is WriteNotesLoading){
             return const Center(child: Text("Notes LOADING"),);
           }
-          if(state is NotesFailed){
+          if(state is WriteNotesFailed){
             return const Center(child: Text("Notes FAILED"));
           }
           return StreamBuilder<QuerySnapshot>(
