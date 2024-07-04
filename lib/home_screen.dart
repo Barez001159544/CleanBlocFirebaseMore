@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ));
   }
-
+final NotesBloc notesBloc= NotesBloc(firestoreServices: firestoreServices);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Icon(Icons.add),
       ),
       body: BlocConsumer<NotesBloc, NotesState>(
+        bloc: notesBloc,
         listener: (context, state){
           //
         },
@@ -63,6 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
           if(state is WriteNotesFailed){
             return const Center(child: Text("Notes FAILED"));
           }
+          print("=================${notesBloc.stream}");
           return StreamBuilder<QuerySnapshot>(
             stream: firestoreServices.readNotes(),
             builder: (BuildContext context,
