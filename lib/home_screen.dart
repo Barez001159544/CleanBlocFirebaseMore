@@ -14,8 +14,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 FirestoreServices firestoreServices = FirestoreServices();
+final NotesBloc notesBloc= NotesBloc(firestoreServices: firestoreServices);
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    notesBloc.add(ReadNotes());
+    super.initState();
+  }
   TextEditingController txtController = TextEditingController();
   void openDialog({String? docID}) {
     showDialog(
@@ -28,12 +34,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 ElevatedButton(
                   onPressed: () {
                     if(docID==null) {
-                      BlocProvider.of<NotesBloc>(context).add(WriteNotes(note: txtController.text));
+                      notesBloc.add(WriteNotes(note: txtController.text));
+                      // BlocProvider.of<NotesBloc>(context).add(WriteNotes(note: txtController.text));
                       // firestoreServices.writeNote(txtController.text);
                     }else{
-                      firestoreServices.updateNote(docID, txtController.text);
+                      notesBloc.add(UpdateNotes(iD: docID, note: txtController.text));
+                      // firestoreServices.updateNote(docID, txtController.text);
                     }
-                    txtController.clear();
+                    // txtController.clear();
                     Navigator.of(context).pop();
                   },
                   child: Text("Add"),
@@ -41,7 +49,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ));
   }
-final NotesBloc notesBloc= NotesBloc(firestoreServices: firestoreServices);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +71,6 @@ final NotesBloc notesBloc= NotesBloc(firestoreServices: firestoreServices);
           if(state is WriteNotesFailed){
             return const Center(child: Text("Notes FAILED"));
           }
-          print("=================${notesBloc.stream}");
           return StreamBuilder<QuerySnapshot>(
             stream: firestoreServices.readNotes(),
             builder: (BuildContext context,
@@ -93,7 +99,8 @@ final NotesBloc notesBloc= NotesBloc(firestoreServices: firestoreServices);
                             SizedBox(width: 5,),
                             IconButton(
                               onPressed: (){
-                                firestoreServices.deleteNote(documentID);
+                                notesBloc.add(DeleteNotes(iD: documentID));
+                                // firestoreServices.deleteNote(documentID);
                               },
                               icon: Icon(Icons.delete),
                             ),

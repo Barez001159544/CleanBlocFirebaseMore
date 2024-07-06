@@ -21,20 +21,25 @@ class NotesBloc extends Bloc<NotesEvents, NotesState>{
     });
     on<ReadNotes>((event, emit) async{
       emit(ReadNotesLoading());
-      final Stream<QuerySnapshot<Object?>> stream =firestoreServices.readNotes();
-      stream.listen((event){
-        for(var change in event.docChanges){
-          final note= NotesModel.fromJson(change.doc.data() as Map<String, dynamic>);
-          emit(ReadNotesSuccess());
+      final Stream<QuerySnapshot<Object?>> stream = await firestoreServices.listenToChanges();
+      await for (var snapshot in stream) {
+        print("============++++++++++++++++++++=============");
+        for (var doc in snapshot.docs) {
+          print(doc.data());
         }
-      });
+        emit(ReadNotesSuccess());
+      }
     });
     on<UpdateNotes>((event, emit) async{
       final response = await firestoreServices.updateNote(event.iD, event.note);
-      response.fold(
-          (l)=> emit(DeleteNotesFailed()),
-          (r)=> emit(DeleteNotesSuccess()),
-      );
+      if (response == null) {
+        emit(UpdateNotesFailed());
+      } else {
+        response.fold(
+              (l) => emit(UpdateNotesFailed()),
+              (r) => emit(UpdateNotesSuccess()),
+        );
+      }
     });
     on<DeleteNotes>((event, emit) async{
       final response = await firestoreServices.deleteNote(event.iD);

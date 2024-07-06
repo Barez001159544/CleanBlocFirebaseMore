@@ -21,6 +21,10 @@ class FirestoreServices{
     return notesStream;
   }
 
+  Stream<QuerySnapshot<Object?>> listenToChanges() {
+    return notes.snapshots();
+  }
+
   Future<dynamic> updateNote(String ID, String newNote) async{
     return notes.doc(ID).update({
       "note": newNote,
