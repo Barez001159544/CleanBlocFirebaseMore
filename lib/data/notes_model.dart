@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crud/notes_entity.dart';
+import 'package:crud/domain/notes_entity.dart';
 
 class NotesModel{
   final String id;

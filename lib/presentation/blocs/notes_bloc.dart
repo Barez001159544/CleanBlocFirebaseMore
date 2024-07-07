@@ -1,32 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crud/blocs/notes_events.dart';
-import 'package:crud/blocs/notes_state.dart';
-import 'package:crud/firestore_services.dart';
-import 'package:crud/notes_entity.dart';
-import 'package:flutter/foundation.dart';
+import 'package:crud/presentation/blocs/notes_events.dart';
+import 'package:crud/presentation/blocs/notes_state.dart';
+import 'package:crud/domain/notes_entity.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../notes_model.dart';
-import '../notes_repository.dart';
+import 'package:crud/data/notes_model.dart';
+import 'package:crud/domain/notes_repository.dart';
 
 
 class NotesBloc extends Bloc<NotesEvents, NotesState>{
-  final FirestoreServices firestoreServices;
   List<NotesEntity> notesList=[];
-
   INotesRepository notesRepository;
 
-  NotesBloc({required this.firestoreServices, required this.notesRepository}):super(WriteNotesInitial()){
+  NotesBloc({required this.notesRepository}):super(WriteNotesInitial()){
     on<WriteNotes>((event, emit) async{
       emit(WriteNotesLoading());
-      final response= await firestoreServices.writeNote(event.note);
+      final response= await notesRepository.writeNote(event.note);
       response.fold(
           (l)=> emit(WriteNotesFailed()),
           (r)=> emit(WriteNotesSuccess())
       );
     });
     on<ReadNotes>((event, emit) async{
-      emit(NotesLoading());
+      emit(ReadNotesLoading());
       final Stream<QuerySnapshot<Object?>> stream = await notesRepository.listenToNoteChanges();
       await for (var snapshot in stream) {
         notesList.clear();
@@ -37,12 +32,11 @@ class NotesBloc extends Bloc<NotesEvents, NotesState>{
             notesList.add(device.toDomain());
           }
         });
-        emit(NotesSuccess());
+        emit(ReadNotesSuccess());
       }
-
     });
     on<UpdateNotes>((event, emit) async{
-      final response = await firestoreServices.updateNote(event.iD, event.note);
+      final response = await notesRepository.updateNote(event.iD, event.note);
       if (response == null) {
         emit(UpdateNotesFailed());
       } else {
@@ -53,11 +47,15 @@ class NotesBloc extends Bloc<NotesEvents, NotesState>{
       }
     });
     on<DeleteNotes>((event, emit) async{
-      final response = await firestoreServices.deleteNote(event.iD);
-      response.fold(
-          (l)=> emit(DeleteNotesFailed()),
-          (r)=> emit(DeleteNotesSuccess()),
-      );
+      final response = await notesRepository.deleteNote(event.iD);
+      if (response == null) {
+        emit(DeleteNotesFailed());
+      } else {
+        response.fold(
+              (l) => emit(DeleteNotesFailed()),
+              (r) => emit(DeleteNotesSuccess()),
+        );
+      }
     });
   }
 }

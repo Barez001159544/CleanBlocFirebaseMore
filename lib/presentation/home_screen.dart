@@ -1,9 +1,8 @@
-import "package:cloud_firestore/cloud_firestore.dart";
-import "package:crud/blocs/notes_bloc.dart";
-import "package:crud/blocs/notes_events.dart";
-import "package:crud/blocs/notes_state.dart";
-import "package:crud/firestore_services.dart";
-import "package:crud/notes_repository.dart";
+import "package:crud/presentation/blocs/notes_bloc.dart";
+import "package:crud/presentation/blocs/notes_events.dart";
+import "package:crud/presentation/blocs/notes_state.dart";
+import "package:crud/data/firestore_services.dart";
+import "package:crud/domain/notes_repository.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 
@@ -16,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 
 FirestoreServices firestoreServices = FirestoreServices();
 NotesRepository notesRepository = NotesRepository(remote: firestoreServices);
-final NotesBloc notesBloc= NotesBloc(firestoreServices: firestoreServices, notesRepository: notesRepository, );
+final NotesBloc notesBloc= NotesBloc(notesRepository: notesRepository, );
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
@@ -37,13 +36,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () {
                     if(docID==null) {
                       notesBloc.add(WriteNotes(note: txtController.text));
-                      // BlocProvider.of<NotesBloc>(context).add(WriteNotes(note: txtController.text));
-                      // firestoreServices.writeNote(txtController.text);
+                      BlocProvider.of<NotesBloc>(context).add(WriteNotes(note: txtController.text));
                     }else{
                       notesBloc.add(UpdateNotes(iD: docID, note: txtController.text));
-                      // firestoreServices.updateNote(docID, txtController.text);
                     }
-                    // txtController.clear();
+                    txtController.clear();
                     Navigator.of(context).pop();
                   },
                   child: Text("Add"),
@@ -73,7 +70,6 @@ class _HomeScreenState extends State<HomeScreen> {
           if (state is ReadNotesFailed) {
             return const Center(child: Text("Notes FAILED"));
           }
-          print("&&&&&&&&&&&&&&&&&&&&&&&&&&$state");
           return ListView.builder(
             itemCount: notesBloc.notesList.length,
             itemBuilder: (context, index) {
@@ -87,15 +83,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     IconButton(
                       onPressed: () {
-                        // openDialog(docID: notesBloc.notesList[index].id);
+                        openDialog(docID: notesBloc.notesList[index].id);
                       },
                       icon: const Icon(Icons.settings_rounded),
                     ),
                     const SizedBox(width: 5),
                     IconButton(
                       onPressed: () {
-                        // notesBloc.add(DeleteNotes(iD: notesBloc.notesList[index].id));
-                        // firestoreServices.deleteNote(documentID);
+                        notesBloc.add(DeleteNotes(iD: notesBloc.notesList[index].id));
                       },
                       icon: const Icon(Icons.delete),
                     ),

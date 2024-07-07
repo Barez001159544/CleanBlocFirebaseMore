@@ -1,12 +1,11 @@
-import 'package:crud/blocs/notes_bloc.dart';
+import 'package:crud/presentation/blocs/notes_bloc.dart';
 import 'package:crud/firebase_options.dart';
-import 'package:crud/firestore_services.dart';
-import 'package:crud/home_screen.dart';
+import 'package:crud/presentation/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'notes_repository.dart';
+import 'domain/notes_repository.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +13,6 @@ void main() async{
   runApp(MyApp());
 }
 
-FirestoreServices firestoreServices = FirestoreServices();
 class MyApp extends StatelessWidget {
   MyApp({super.key});
   NotesRepository notesRepository = NotesRepository(remote: firestoreServices);
@@ -23,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<NotesBloc>(
-          create: (context)=> NotesBloc(firestoreServices: firestoreServices, notesRepository: notesRepository),
+          create: (context)=> NotesBloc(notesRepository: notesRepository),
         ),
       ],
       child: MaterialApp(

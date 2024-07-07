@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+
 class FirestoreServices{
 
   final CollectionReference notes= FirebaseFirestore.instance.collection("notes");
