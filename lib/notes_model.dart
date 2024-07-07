@@ -1,15 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crud/notes_entity.dart';
 
 class NotesModel{
+  final String id;
   final String note;
   final Timestamp timestamp;
 
-  NotesModel({required this.note, required this.timestamp});
+  NotesModel({required this.id, required this.note, required this.timestamp});
 
-  factory NotesModel.fromJson(Map<String, dynamic> map){
+  factory NotesModel.fromJson(DocumentSnapshot obj){
     return NotesModel(
-      note: map["note"] as String,
-      timestamp: map["timestamp"] as Timestamp,
+      id: obj.id,
+      note: (obj.data() as Map<String, dynamic>)["note"] as String,
+      timestamp: (obj.data() as Map<String, dynamic>)["timestamp"] as Timestamp,
+    );
+  }
+
+  NotesEntity toDomain() {
+    return NotesEntity(
+      id: id,
+      note: note,
+      timestamp: timestamp,
     );
   }
 }

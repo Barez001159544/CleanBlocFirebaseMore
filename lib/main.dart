@@ -6,21 +6,24 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'notes_repository.dart';
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MyApp());
 }
 
+FirestoreServices firestoreServices = FirestoreServices();
 class MyApp extends StatelessWidget {
   MyApp({super.key});
-  FirestoreServices firestoreServices = FirestoreServices();
+  NotesRepository notesRepository = NotesRepository(remote: firestoreServices);
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider<NotesBloc>(
-          create: (context)=> NotesBloc(firestoreServices: firestoreServices),
+          create: (context)=> NotesBloc(firestoreServices: firestoreServices, notesRepository: notesRepository),
         ),
       ],
       child: MaterialApp(

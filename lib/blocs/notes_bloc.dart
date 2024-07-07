@@ -2,15 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crud/blocs/notes_events.dart';
 import 'package:crud/blocs/notes_state.dart';
 import 'package:crud/firestore_services.dart';
+import 'package:crud/notes_entity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../notes_model.dart';
+import '../notes_repository.dart';
+
 
 class NotesBloc extends Bloc<NotesEvents, NotesState>{
   final FirestoreServices firestoreServices;
+  List<NotesEntity> notesList=[];
 
-  NotesBloc({required this.firestoreServices}):super(WriteNotesInitial()){
+  INotesRepository notesRepository;
+
+  NotesBloc({required this.firestoreServices, required this.notesRepository}):super(WriteNotesInitial()){
     on<WriteNotes>((event, emit) async{
       emit(WriteNotesLoading());
       final response= await firestoreServices.writeNote(event.note);
@@ -20,15 +26,20 @@ class NotesBloc extends Bloc<NotesEvents, NotesState>{
       );
     });
     on<ReadNotes>((event, emit) async{
-      emit(ReadNotesLoading());
-      final Stream<QuerySnapshot<Object?>> stream = await firestoreServices.listenToChanges();
+      emit(NotesLoading());
+      final Stream<QuerySnapshot<Object?>> stream = await notesRepository.listenToNoteChanges();
       await for (var snapshot in stream) {
-        print("============++++++++++++++++++++=============");
-        for (var doc in snapshot.docs) {
-          print(doc.data());
-        }
-        emit(ReadNotesSuccess());
+        notesList.clear();
+        snapshot.docs.forEach((change) {
+          var data = change;
+          if (data.data() != null && data.data() is Map<String, dynamic>) {
+            var device = NotesModel.fromJson(data);
+            notesList.add(device.toDomain());
+          }
+        });
+        emit(NotesSuccess());
       }
+
     });
     on<UpdateNotes>((event, emit) async{
       final response = await firestoreServices.updateNote(event.iD, event.note);
@@ -50,3 +61,4 @@ class NotesBloc extends Bloc<NotesEvents, NotesState>{
     });
   }
 }
+
