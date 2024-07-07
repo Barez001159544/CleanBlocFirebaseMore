@@ -5,8 +5,8 @@ import 'package:dartz/dartz.dart';
 abstract class INotesRepository{
   Stream<QuerySnapshot<Object?>> listenToNoteChanges();
   Future<Either<Exception, dynamic>> writeNote(String txt);
-  Future<dynamic> updateNote(String ID, String newNote);
-  Future<dynamic> deleteNote(String ID);
+  Future<Either<Exception, dynamic>> updateNote(String ID, String newNote);
+  Future<Either<Exception, dynamic>> deleteNote(String ID);
 }
 
 class NotesRepository implements INotesRepository{
@@ -20,18 +20,34 @@ class NotesRepository implements INotesRepository{
   }
 
   @override
-  Future updateNote(String ID, String newNote) {
-    return remote.updateNote(ID, newNote);
+  Future<Either<Exception, dynamic>> updateNote(String ID, String newNote) async {
+    try {
+      final result = await remote.updateNote(ID, newNote);
+      return right(result);
+    } catch (e) {
+      return left(Exception(e.toString()));
+    }
   }
 
-  @override
-  Future<Either<Exception, dynamic>> writeNote(String txt) {
-    return remote.writeNote(txt);
-  }
 
   @override
-  Future deleteNote(String ID) {
-    return remote.deleteNote(ID);
+  Future<Either<Exception, dynamic>> writeNote(String txt) async {
+    try {
+      final result = await remote.writeNote(txt);
+      return right(result);
+    } catch (e) {
+      return left(Exception(e.toString()));
+    }
   }
+
+  Future<Either<Exception, dynamic>> deleteNote(String ID) async {
+    try {
+      final result = await remote.deleteNote(ID);
+      return right(result);
+    } catch (e) {
+      return left(Exception(e.toString()));
+    }
+  }
+
 
 }
