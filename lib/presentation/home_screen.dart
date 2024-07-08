@@ -17,11 +17,14 @@ FirestoreServices firestoreServices = FirestoreServices();
 NotesRepository notesRepository = NotesRepository(remote: firestoreServices);
 final NotesBloc notesBloc= NotesBloc(notesRepository: notesRepository, );
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin{
+  late final TabController _tabController;
+
   @override
   void initState() {
     notesBloc.add(ReadNotes());
     super.initState();
+    _tabController = TabController(length: 1, vsync: this);
   }
   TextEditingController txtController = TextEditingController();
   void openDialog({String? docID}) {
@@ -51,56 +54,99 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Notes"),
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: openDialog,
         child: Icon(Icons.add),
       ),
-      body: BlocConsumer<NotesBloc, NotesState>(
-        bloc: notesBloc,
-        listener: (context, state) {
-          // Handle side effects, if any
-        },
-        builder: (context, state) {
-          if (state is ReadNotesInitial || state is ReadNotesLoading) {
-            return const Center(child: Text("Notes LOADING"));
-          }
-          if (state is ReadNotesFailed) {
-            return const Center(child: Text("Notes FAILED"));
-          }
-          return ListView.builder(
-            itemCount: notesBloc.notesList.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(
-                  notesBloc.notesList[index].note,
-                  style: const TextStyle(color: Colors.black),
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return [
+            SliverAppBar(
+              title: Text("Notes"),
+              floating: false,
+              pinned: false,
+              snap: false,
+              forceElevated: innerBoxIsScrolled,
+              actions: [
+                Image.asset(
+                  height: 32,
+                  width: 32,
+                  "assets/images/sorting.png",
                 ),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
+              ],
+              bottom: PreferredSize(
+                preferredSize: Size.fromHeight(50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(
-                      onPressed: () {
-                        openDialog(docID: notesBloc.notesList[index].id);
-                      },
-                      icon: const Icon(Icons.settings_rounded),
-                    ),
-                    const SizedBox(width: 5),
-                    IconButton(
-                      onPressed: () {
-                        notesBloc.add(DeleteNotes(iD: notesBloc.notesList[index].id));
-                      },
-                      icon: const Icon(Icons.delete),
+                    Text("All Notes"),
+                    SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15)))),
+                          backgroundColor: WidgetStateProperty.all(Color(0xff1F1F1F),),
+                          side: WidgetStateProperty.all(BorderSide(width: 1, color: Colors.white))
+                        ),
+                          onPressed: (){},
+                          child: Center(child: Icon(Icons.add))),
                     ),
                   ],
                 ),
+              ),
+            ),
+          ];
+        }, body: TabBarView(
+        controller: _tabController,
+        children: <Widget>[
+          BlocConsumer<NotesBloc, NotesState>(
+            bloc: notesBloc,
+            listener: (context, state) {
+              // Handle side effects, if any
+            },
+            builder: (context, state) {
+              if (state is ReadNotesInitial || state is ReadNotesLoading) {
+                return const Center(child: Text("Notes LOADING"));
+              }
+              if (state is ReadNotesFailed) {
+                return const Center(child: Text("Notes FAILED"));
+              }
+              return ListView.builder(
+                itemCount: notesBloc.notesList.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(
+                      notesBloc.notesList[index].note,
+                      style: const TextStyle(color: Colors.black),
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            openDialog(docID: notesBloc.notesList[index].id);
+                          },
+                          icon: const Icon(Icons.settings_rounded),
+                        ),
+                        const SizedBox(width: 5),
+                        IconButton(
+                          onPressed: () {
+                            notesBloc.add(DeleteNotes(iD: notesBloc.notesList[index].id));
+                          },
+                          icon: const Icon(Icons.delete),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               );
             },
-          );
-        },
+          ),
+        ],
       ),
+      ),
+
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:crud/core/theme_data.dart';
 import 'package:crud/presentation/blocs/notes_bloc.dart';
 import 'package:crud/firebase_options.dart';
 import 'package:crud/presentation/home_screen.dart';
@@ -26,10 +27,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
+        theme: themeData,
         debugShowCheckedModeBanner: false,
         home: HomeScreen(),
       ),
