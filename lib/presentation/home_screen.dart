@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return [
             SliverAppBar(
-              title: Text("Notes"),
+              title: Text("Notes", style: TextStyle(color: Colors.grey, fontSize: 24),),
               floating: false,
               pinned: false,
               snap: false,
@@ -75,77 +75,185 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 ),
               ],
               bottom: PreferredSize(
-                preferredSize: Size.fromHeight(50),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("All Notes"),
-                    SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15)))),
-                          backgroundColor: WidgetStateProperty.all(Color(0xff1F1F1F),),
-                          side: WidgetStateProperty.all(BorderSide(width: 1, color: Colors.white))
+                preferredSize: Size.fromHeight(100),
+                child: Container(
+                  height: 100,
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("All Notes", style: TextStyle(fontSize: 40),),
+                          Text("0 Notes", style: TextStyle(fontSize: 16),),
+                        ],
+                      ),
+                      SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15)))),
+                            backgroundColor: MaterialStateProperty.all(Color(0xff1F1F1F)),
+                            side: MaterialStateProperty.all(BorderSide(width: 1, color: Colors.white)),
+                          ),
+                          onPressed: () {},
+                          child: Center(
+                            child: Image.asset(
+                              width: 100,
+                              height: 100,
+                              "assets/images/add.png",
+                            ),
+                          ),
                         ),
-                          onPressed: (){},
-                          child: Center(child: Icon(Icons.add))),
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ];
-        }, body: TabBarView(
-        controller: _tabController,
-        children: <Widget>[
-          BlocConsumer<NotesBloc, NotesState>(
-            bloc: notesBloc,
-            listener: (context, state) {
-              // Handle side effects, if any
-            },
-            builder: (context, state) {
-              if (state is ReadNotesInitial || state is ReadNotesLoading) {
-                return const Center(child: Text("Notes LOADING"));
-              }
-              if (state is ReadNotesFailed) {
-                return const Center(child: Text("Notes FAILED"));
-              }
-              return ListView.builder(
-                itemCount: notesBloc.notesList.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(
-                      notesBloc.notesList[index].note,
-                      style: const TextStyle(color: Colors.black),
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
+        },
+        body: TabBarView(
+          controller: _tabController,
+          children: <Widget>[
+            BlocConsumer<NotesBloc, NotesState>(
+              bloc: notesBloc,
+              listener: (context, state) {
+                // Handle side effects, if any
+              },
+              builder: (context, state) {
+                if (state is ReadNotesInitial || state is ReadNotesLoading) {
+                  return SizedBox(
+                    height: 100,
+                    width: 100,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        IconButton(
-                          onPressed: () {
-                            openDialog(docID: notesBloc.notesList[index].id);
-                          },
-                          icon: const Icon(Icons.settings_rounded),
+                        SizedBox(
+                          height: 1,
+                          width: 100,
+                          child: LinearProgressIndicator(
+                            minHeight: 1,
+                            backgroundColor: Colors.grey,
+                            color: Colors.black,
+                          ),
                         ),
-                        const SizedBox(width: 5),
-                        IconButton(
-                          onPressed: () {
-                            notesBloc.add(DeleteNotes(iD: notesBloc.notesList[index].id));
-                          },
-                          icon: const Icon(Icons.delete),
+                        SizedBox(height: 10),
+                        SizedBox(
+                          width: 100, // Set the width to match the LinearProgressIndicator
+                          child: FittedBox(
+                            fit: BoxFit.fill, // Ensure the text scales down to fit within the box
+                            child: Text(
+                              "Loading...",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ),
                         ),
                       ],
                     ),
                   );
-                },
-              );
-            },
-          ),
-        ],
-      ),
-      ),
+                }
+                if (state is ReadNotesFailed) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                          width: 50,
+                          height: 50,
+                          "assets/images/alert.png"),
+                      SizedBox(height: 10,),
+                      Text("An Error Occured"),
+                    ],
+                  );
+                }
+                return ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: notesBloc.notesList.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(
+                              height: 50,
+                              width: 50,
+                              child: Center(child: Text("01")),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                                child: Text("Personal Notes", style: TextStyle(fontSize: 45),),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 50,
+                              height: 50,
+                            ),
+                            Expanded(
+                              child: Container(
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(color: Colors.white, width: 1),
+                                    )
+                                ),
+                                child: Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Text("16/6/2024"),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        // Expanded(
+                        //   child: Container(
+                        //     height: 100,
+                        //     decoration: BoxDecoration(
+                        //       border: Border(
+                        //         bottom: BorderSide(color: Colors.white, width: 1),
+                        //       )
+                        //     ),
+                        //   ),
+                        // ),
+                      ],
+                    );
+                    return ListTile(
+                      title: Text(
+                        notesBloc.notesList[index].note,
+                        style: const TextStyle(color: Colors.black),
+                      ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              openDialog(docID: notesBloc.notesList[index].id);
+                            },
+                            icon: const Icon(Icons.settings_rounded),
+                          ),
+                          const SizedBox(width: 5),
+                          IconButton(
+                            onPressed: () {
+                              notesBloc.add(DeleteNotes(iD: notesBloc.notesList[index].id));
+                            },
+                            icon: const Icon(Icons.delete),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ],
+        ),
+      )
+
 
     );
   }
