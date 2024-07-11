@@ -90,22 +90,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           Text("0 Notes", style: TextStyle(fontSize: 16),),
                         ],
                       ),
-                      SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15)))),
-                            backgroundColor: MaterialStateProperty.all(Color(0xff1F1F1F)),
-                            side: MaterialStateProperty.all(BorderSide(width: 1, color: Colors.white)),
-                          ),
-                          onPressed: () {},
-                          child: Center(
-                            child: Image.asset(
-                              width: 100,
-                              height: 100,
-                              "assets/images/add.png",
-                            ),
+                      Container(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          image: DecorationImage(
+                            image: AssetImage("assets/images/plus.png"),
                           ),
                         ),
                       ),
@@ -180,11 +171,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             SizedBox(
                               height: 50,
                               width: 50,
-                              child: Center(child: Text("01")),
+                              child: Center(child: Text((index+1).toString().padLeft(2, "0"))),
                             ),
                             Align(
                               alignment: Alignment.centerLeft,
-                                child: Text("Personal Notes", style: TextStyle(fontSize: 45),),
+                                child: Text(notesBloc.notesList[index].title, style: TextStyle(fontSize: 45),),
                             ),
                           ],
                         ),
@@ -204,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 ),
                                 child: Align(
                                   alignment: Alignment.bottomLeft,
-                                  child: Text("16/6/2024"),
+                                  child: Text("${notesBloc.notesList[index].timestamp}",),
                                 ),
                               ),
                             ),
