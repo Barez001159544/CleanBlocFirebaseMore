@@ -3,6 +3,7 @@ import "package:crud/presentation/blocs/notes_events.dart";
 import "package:crud/presentation/blocs/notes_state.dart";
 import "package:crud/data/firestore_services.dart";
 import "package:crud/domain/notes_repository.dart";
+import "package:crud/presentation/pages/writing_and_updating_screen.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 
@@ -78,20 +79,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               forceElevated: innerBoxIsScrolled,
               actions: [
                 GestureDetector(
-                  onTap: (){
-                    setState(() {
-                      // fromNewest=!fromNewest;
-                      // notesBloc.fromNewest=false;
-                      // print(fromNewest);
-                      toggleSortingOrder();
-                    });
-                  },
-                  child: SizedBox(
-                    child: Image.asset(
-                      height: 32,
-                      width: 32,
-                      "assets/images/sorting.png",
-                    ),
+                  onTap: ()=> toggleSortingOrder(),
+                  child: Image.asset(
+                    height: 32,
+                    width: 32,
+                    fromNewest?"assets/images/sorting.png":"assets/images/desorting.png",
                   ),
                 ),
               ],
@@ -125,17 +117,20 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   ],
                 ),
                       ),
-                      Container(
-                        width: 70,
-                        height: 70,
-                        padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          // color: Colors.blue,
-                          border: Border.all(width: 1, color: Colors.grey.shade200),
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        child: Image.asset(
-                          "assets/images/plus.png",
+                      GestureDetector(
+                        onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (context)=>WritingAndUpdatingScreen())),
+                        child: Container(
+                          width: 70,
+                          height: 70,
+                          padding: EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            // color: Colors.blue,
+                            border: Border.all(width: 1, color: Colors.grey.shade200),
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          child: Image.asset(
+                            "assets/images/plus.png",
+                          ),
                         ),
                       ),
                     ],
