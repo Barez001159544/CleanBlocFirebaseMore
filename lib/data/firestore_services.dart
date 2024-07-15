@@ -17,8 +17,9 @@ class FirestoreServices{
     return notesStream;
   }
 
-  Stream<QuerySnapshot<Object?>> listenToChanges() {
-    return notes.snapshots();
+  Stream<QuerySnapshot<Object?>> listenToChanges(bool fromNewest) {
+    print(fromNewest);
+    return notes.orderBy("timestamp", descending: fromNewest).snapshots();
   }
 
   Future<dynamic> updateNote(String ID, String newNote) async{

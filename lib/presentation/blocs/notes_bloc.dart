@@ -22,7 +22,7 @@ class NotesBloc extends Bloc<NotesEvents, NotesState>{
     });
     on<ReadNotes>((event, emit) async{
       emit(ReadNotesLoading());
-      final Stream<QuerySnapshot<Object?>> stream = await notesRepository.listenToNoteChanges();
+      final Stream<QuerySnapshot<Object?>> stream = await notesRepository.listenToNoteChanges(event.fromNewest);
       await for (var snapshot in stream) {
         notesList.clear();
         snapshot.docs.forEach((change) {

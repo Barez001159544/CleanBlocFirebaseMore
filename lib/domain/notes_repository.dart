@@ -3,7 +3,7 @@ import 'package:crud/data/firestore_services.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class INotesRepository{
-  Stream<QuerySnapshot<Object?>> listenToNoteChanges();
+  Stream<QuerySnapshot<Object?>> listenToNoteChanges(bool fromNewest);
   Future<Either<Exception, dynamic>> writeNote(String txt);
   Future<Either<Exception, dynamic>> updateNote(String ID, String newNote);
   Future<Either<Exception, dynamic>> deleteNote(String ID);
@@ -14,8 +14,8 @@ class NotesRepository implements INotesRepository{
   NotesRepository({required this.remote});
 
   @override
-  Stream<QuerySnapshot<Object?>> listenToNoteChanges() {
-    final Stream<QuerySnapshot<Object?>> stream= remote.listenToChanges();
+  Stream<QuerySnapshot<Object?>> listenToNoteChanges(bool fromNewest) {
+    final Stream<QuerySnapshot<Object?>> stream= remote.listenToChanges(fromNewest);
     return stream;
   }
 

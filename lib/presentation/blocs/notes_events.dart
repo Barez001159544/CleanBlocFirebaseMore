@@ -1,6 +1,9 @@
 abstract class NotesEvents{}
 
-class ReadNotes extends NotesEvents{}
+class ReadNotes extends NotesEvents{
+  final bool fromNewest;
+  ReadNotes({required this.fromNewest});
+}
 
 class WriteNotes extends NotesEvents{
   final String note;

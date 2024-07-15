@@ -19,10 +19,19 @@ final NotesBloc notesBloc= NotesBloc(notesRepository: notesRepository, );
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin{
   late final TabController _tabController;
+  String numOfNotes="";
+  bool fromNewest=true;
+
+  void toggleSortingOrder() {
+    setState(() {
+      fromNewest = !fromNewest;
+      notesBloc.add(ReadNotes(fromNewest: fromNewest));
+    });
+  }
 
   @override
   void initState() {
-    notesBloc.add(ReadNotes());
+    notesBloc.add(ReadNotes(fromNewest: fromNewest));
     super.initState();
     _tabController = TabController(length: 1, vsync: this);
   }
@@ -68,10 +77,22 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               snap: false,
               forceElevated: innerBoxIsScrolled,
               actions: [
-                Image.asset(
-                  height: 32,
-                  width: 32,
-                  "assets/images/sorting.png",
+                GestureDetector(
+                  onTap: (){
+                    setState(() {
+                      // fromNewest=!fromNewest;
+                      // notesBloc.fromNewest=false;
+                      // print(fromNewest);
+                      toggleSortingOrder();
+                    });
+                  },
+                  child: SizedBox(
+                    child: Image.asset(
+                      height: 32,
+                      width: 32,
+                      "assets/images/sorting.png",
+                    ),
+                  ),
                 ),
               ],
               bottom: PreferredSize(
@@ -82,22 +103,39 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("All Notes", style: TextStyle(fontSize: 40),),
-                          Text("0 Notes", style: TextStyle(fontSize: 16),),
-                        ],
+                      BlocListener<NotesBloc, NotesState>(
+                        listener: (context, state){
+    if(state is ReadNotesInitial || state is ReadNotesLoading){
+      numOfNotes="-";
+    }
+    if(state is ReadNotesFailed){
+      numOfNotes="0";
+    }
+    if(state is ReadNotesSuccess){
+      numOfNotes= notesBloc.notesList.length.toString();
+    }
+                        },
+                        bloc: notesBloc,
+                          child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                      Text("All Notes", style: TextStyle(fontSize: 40),),
+                  Text("$numOfNotes Notes", style: TextStyle(fontSize: 16),),
+                  ],
+                ),
                       ),
                       Container(
-                        width: 100,
-                        height: 100,
+                        width: 70,
+                        height: 70,
+                        padding: EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          color: Colors.blue,
-                          image: DecorationImage(
-                            image: AssetImage("assets/images/plus.png"),
-                          ),
+                          // color: Colors.blue,
+                          border: Border.all(width: 1, color: Colors.grey.shade200),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: Image.asset(
+                          "assets/images/plus.png",
                         ),
                       ),
                     ],
@@ -188,14 +226,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             Expanded(
                               child: Container(
                                 height: 50,
+                                padding: EdgeInsets.only(bottom: 5),
                                 decoration: BoxDecoration(
                                     border: Border(
                                       bottom: BorderSide(color: Colors.white, width: 1),
-                                    )
+                                    ),
                                 ),
                                 child: Align(
                                   alignment: Alignment.bottomLeft,
-                                  child: Text("${notesBloc.notesList[index].timestamp}",),
+                                  child: Text("${DateTime.fromMillisecondsSinceEpoch(notesBloc.notesList[index].timestamp.millisecondsSinceEpoch).toString().split(" ")[0]} | ${DateTime.fromMillisecondsSinceEpoch(notesBloc.notesList[index].timestamp.millisecondsSinceEpoch).toString().split(" ")[1].split(".")[0]}",),
                                 ),
                               ),
                             ),
