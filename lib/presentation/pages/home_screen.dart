@@ -197,55 +197,62 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   padding: EdgeInsets.zero,
                   itemCount: notesBloc.notesList.length,
                   itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        Row(
-                          children: [
-                            SizedBox(
-                              height: 50,
-                              width: 50,
-                              child: Center(child: Text((index+1).toString().padLeft(2, "0"))),
-                            ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                                child: Text(notesBloc.notesList[index].title, style: TextStyle(fontSize: 45),),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 50,
-                              height: 50,
-                            ),
-                            Expanded(
-                              child: Container(
+                    return GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                          return WritingAndUpdatingScreen(noteTitle: notesBloc.notesList[index].title, noteContent: notesBloc.notesList[index].note, cuDate: "${DateTime.fromMillisecondsSinceEpoch(notesBloc.notesList[index].timestamp.millisecondsSinceEpoch).toString().split(" ")[0]} | ${DateTime.fromMillisecondsSinceEpoch(notesBloc.notesList[index].timestamp.millisecondsSinceEpoch).toString().split(" ")[1].split(".")[0]}",);
+                        }));
+                      },
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              SizedBox(
                                 height: 50,
-                                padding: EdgeInsets.only(bottom: 5),
-                                decoration: BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide(color: Colors.white, width: 1),
-                                    ),
-                                ),
-                                child: Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Text("${DateTime.fromMillisecondsSinceEpoch(notesBloc.notesList[index].timestamp.millisecondsSinceEpoch).toString().split(" ")[0]} | ${DateTime.fromMillisecondsSinceEpoch(notesBloc.notesList[index].timestamp.millisecondsSinceEpoch).toString().split(" ")[1].split(".")[0]}",),
+                                width: 50,
+                                child: Center(child: Text((index+1).toString().padLeft(2, "0"))),
+                              ),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                  child: Text(notesBloc.notesList[index].title, style: TextStyle(fontSize: 45),),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 50,
+                                height: 50,
+                              ),
+                              Expanded(
+                                child: Container(
+                                  height: 50,
+                                  padding: EdgeInsets.only(bottom: 5),
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(color: Colors.white, width: 1),
+                                      ),
+                                  ),
+                                  child: Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Text("${DateTime.fromMillisecondsSinceEpoch(notesBloc.notesList[index].timestamp.millisecondsSinceEpoch).toString().split(" ")[0]} | ${DateTime.fromMillisecondsSinceEpoch(notesBloc.notesList[index].timestamp.millisecondsSinceEpoch).toString().split(" ")[1].split(".")[0]}",),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        // Expanded(
-                        //   child: Container(
-                        //     height: 100,
-                        //     decoration: BoxDecoration(
-                        //       border: Border(
-                        //         bottom: BorderSide(color: Colors.white, width: 1),
-                        //       )
-                        //     ),
-                        //   ),
-                        // ),
-                      ],
+                            ],
+                          ),
+                          // Expanded(
+                          //   child: Container(
+                          //     height: 100,
+                          //     decoration: BoxDecoration(
+                          //       border: Border(
+                          //         bottom: BorderSide(color: Colors.white, width: 1),
+                          //       )
+                          //     ),
+                          //   ),
+                          // ),
+                        ],
+                      ),
                     );
                     return ListTile(
                       title: Text(

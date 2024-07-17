@@ -2,13 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class WritingAndUpdatingScreen extends StatefulWidget {
-  const WritingAndUpdatingScreen({super.key});
+  WritingAndUpdatingScreen({
+    super.key,
+    this.noteTitle="",
+    this.noteContent="",
+    this.cuDate="",
+  });
 
+  String noteTitle;
+  String noteContent;
+  String cuDate;
   @override
   State<WritingAndUpdatingScreen> createState() => _WritingAndUpdatingScreenState();
 }
 
 class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
+  late TextEditingController noteTitleController;
+  late TextEditingController noteContentController;
+
+  @override
+  void initState() {
+    super.initState();
+    noteTitleController = TextEditingController(text: widget.noteTitle);
+    noteContentController = TextEditingController(text: widget.noteContent);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +90,7 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
             Text("7/5/24 | 6:59 PM", style: TextStyle(fontSize: 18),),
             SizedBox(height: 20,),
             TextField(
-              controller: TextEditingController(text: "Personal Notes jfoa oafj"),
+              controller: noteTitleController,
               style: TextStyle(fontSize: 45),
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.zero,
@@ -82,7 +100,7 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
             ),
             SizedBox(height: 20,),
             TextField(
-              controller: TextEditingController(text: "Personal Notes Reloaded 1 of 1071 libraries in 1,130ms Personal Notes Reloaded 1 of 1071 libraries in 1,130ms Personal Notes Reloaded 1 of 1071 libraries in 1,130ms Personal Notes Reloaded 1 of 1071 libraries in 1,130ms (compile: 24 ms, reload: 411 ms, reassemble: 430 ms). Personal Notes Reloaded 1 of 1071 libraries in 1,130ms (compile: 24 ms, reload: 411 ms, reassemble: 430 ms). Personal Notes Reloaded 1 of 1071 libraries in 1,130ms (compile: 24 ms, reload: 411 ms, reassemble: 430 ms). Personal Notes Reloaded 1 of 1071 libraries in 1,130ms (compile: 24 ms, reload: 411 ms, reassemble: 430 ms). Personal Notes Reloaded 1 of 1071 libraries in 1,130ms (compile: 24 ms, reload: 411 ms, reassemble: 430 ms). Personal Notes Reloaded 1 of 1071 libraries in 1,130ms (compile: 24 ms, reload: 411 ms, reassemble: 430 ms). Personal Notes Reloaded 1 of 1071 libraries in 1,130ms (compile: 24 ms, reload: 411 ms, reassemble: 430 ms). Personal Notes Reloaded 1 of 1071 libraries in 1,130ms (compile: 24 ms, reload: 411 ms, reassemble: 430 ms). Personal Notes Reloaded 1 of 1071 libraries in 1,130ms (compile: 24 ms, reload: 411 ms, reassemble: 430 ms). Personal Notes Reloaded 1 of 1071 libraries in 1,130ms (compile: 24 ms, reload: 411 ms, reassemble: 430 ms). Personal Notes Reloaded 1 of 1071 libraries in 1,130ms (compile: 24 ms, reload: 411 ms, reassemble: 430 ms). Personal Notes Reloaded 1 of 1071 libraries in 1,130ms (compile: 24 ms, reload: 411 ms, reassemble: 430 ms). Personal Notes Reloaded 1 of 1071 libraries in 1,130ms (compile: 24 ms, reload: 411 ms, reassemble: 430 ms)."),
+              controller: noteContentController,
               style: TextStyle(fontSize: 14),
               maxLines: null,
               decoration: InputDecoration(
