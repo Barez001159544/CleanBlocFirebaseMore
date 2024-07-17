@@ -5,8 +5,9 @@ class FirestoreServices{
 
   final CollectionReference notes= FirebaseFirestore.instance.collection("notes");
 
-  Future<dynamic> writeNote(String txt) async{
+  Future<dynamic> writeNote(String title, String txt) async{
       return notes.add({
+        "title": title,
         "note": txt,
         "timestamp": Timestamp.now()
       });
@@ -22,8 +23,9 @@ class FirestoreServices{
     return notes.orderBy("timestamp", descending: fromNewest).snapshots();
   }
 
-  Future<dynamic> updateNote(String ID, String newNote) async{
+  Future<dynamic> updateNote(String ID,String newTitle, String newNote) async{
     return notes.doc(ID).update({
+        "title": newTitle,
         "note": newNote,
         "timestamp": Timestamp.now(),
       });

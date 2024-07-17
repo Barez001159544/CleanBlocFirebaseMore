@@ -16,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 
 FirestoreServices firestoreServices = FirestoreServices();
 NotesRepository notesRepository = NotesRepository(remote: firestoreServices);
-final NotesBloc notesBloc= NotesBloc(notesRepository: notesRepository, );
+final NotesBloc notesBloc= NotesBloc(notesRepository: notesRepository,);
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin{
   late final TabController _tabController;
@@ -48,10 +48,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 ElevatedButton(
                   onPressed: () {
                     if(docID==null) {
-                      notesBloc.add(WriteNotes(note: txtController.text));
-                      BlocProvider.of<NotesBloc>(context).add(WriteNotes(note: txtController.text));
+                      notesBloc.add(WriteNotes(title: "", note: txtController.text));
+                      BlocProvider.of<NotesBloc>(context).add(WriteNotes(title: "", note: txtController.text));
                     }else{
-                      notesBloc.add(UpdateNotes(iD: docID, note: txtController.text));
+                      notesBloc.add(UpdateNotes(iD: docID, title: "", note: txtController.text));
                     }
                     txtController.clear();
                     Navigator.of(context).pop();
@@ -200,7 +200,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     return GestureDetector(
                       onTap: (){
                         Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                          return WritingAndUpdatingScreen(noteTitle: notesBloc.notesList[index].title, noteContent: notesBloc.notesList[index].note, cuDate: "${DateTime.fromMillisecondsSinceEpoch(notesBloc.notesList[index].timestamp.millisecondsSinceEpoch).toString().split(" ")[0]} | ${DateTime.fromMillisecondsSinceEpoch(notesBloc.notesList[index].timestamp.millisecondsSinceEpoch).toString().split(" ")[1].split(".")[0]}",);
+                          return WritingAndUpdatingScreen(docID: notesBloc.notesList[index].id, noteTitle: notesBloc.notesList[index].title, noteContent: notesBloc.notesList[index].note, cuDate: "${DateTime.fromMillisecondsSinceEpoch(notesBloc.notesList[index].timestamp.millisecondsSinceEpoch).toString().split(" ")[0]} | ${DateTime.fromMillisecondsSinceEpoch(notesBloc.notesList[index].timestamp.millisecondsSinceEpoch).toString().split(" ")[1].split(".")[0]}",);
                         }));
                       },
                       child: Column(

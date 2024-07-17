@@ -1,14 +1,21 @@
+import 'package:crud/presentation/blocs/notes_bloc.dart';
+import 'package:crud/presentation/blocs/notes_events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import '../../data/firestore_services.dart';
+import '../../domain/notes_repository.dart';
 
 class WritingAndUpdatingScreen extends StatefulWidget {
   WritingAndUpdatingScreen({
     super.key,
+    this.docID,
     this.noteTitle="",
     this.noteContent="",
     this.cuDate="",
   });
 
+  String? docID;
   String noteTitle;
   String noteContent;
   String cuDate;
@@ -17,6 +24,7 @@ class WritingAndUpdatingScreen extends StatefulWidget {
 }
 
 class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
+  final NotesBloc notesBloc= NotesBloc(notesRepository: NotesRepository(remote: FirestoreServices()),);
   late TextEditingController noteTitleController;
   late TextEditingController noteContentController;
 
@@ -71,7 +79,17 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pop();
+              print("PRINTED OUTTTTTTTTTTTTT");
+              print(noteTitleController.text);
+              print(noteContentController.text);
+              if(widget.docID==null) {
+                notesBloc.add(WriteNotes(title: noteTitleController.text, note: noteTitleController.text));
+               // notesBloc.add(WriteNotes(note: txtController.text));
+              }else{
+                notesBloc.add(UpdateNotes(iD: widget.docID!, title: noteTitleController.text, note: noteContentController.text));
+              }
+              // txtController.clear();
+              // Navigator.of(context).pop();
             },
             child: SizedBox(
               height: kToolbarHeight,

@@ -6,8 +6,9 @@ class ReadNotes extends NotesEvents{
 }
 
 class WriteNotes extends NotesEvents{
+  final String title;
   final String note;
-  WriteNotes({required this.note});
+  WriteNotes({required this.title, required this.note});
 }
 
 class DeleteNotes extends NotesEvents{
@@ -17,6 +18,7 @@ class DeleteNotes extends NotesEvents{
 
 class UpdateNotes extends NotesEvents{
   final String iD;
+  final String title;
   final String note;
-  UpdateNotes({required this.iD, required this.note});
+  UpdateNotes({required this.iD, required this.title, required this.note});
 }

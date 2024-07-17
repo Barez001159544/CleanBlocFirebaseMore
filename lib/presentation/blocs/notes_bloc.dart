@@ -14,7 +14,7 @@ class NotesBloc extends Bloc<NotesEvents, NotesState>{
   NotesBloc({required this.notesRepository}):super(WriteNotesInitial()){
     on<WriteNotes>((event, emit) async{
       emit(WriteNotesLoading());
-      final response= await notesRepository.writeNote(event.note);
+      final response= await notesRepository.writeNote(event.title, event.note);
       response.fold(
           (l)=> emit(WriteNotesFailed()),
           (r)=> emit(WriteNotesSuccess())
@@ -36,7 +36,7 @@ class NotesBloc extends Bloc<NotesEvents, NotesState>{
       }
     });
     on<UpdateNotes>((event, emit) async{
-      final response = await notesRepository.updateNote(event.iD, event.note);
+      final response = await notesRepository.updateNote(event.iD, event.title, event.note);
       if (response == null) {
         emit(UpdateNotesFailed());
       } else {
