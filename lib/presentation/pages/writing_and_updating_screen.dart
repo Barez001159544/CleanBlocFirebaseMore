@@ -76,6 +76,22 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
           });
           _startTimeout();
         }
+
+        if(state is DeleteNotesSuccess){
+          print("Notes successfully UPDATED");
+          Navigator.of(context).pop();
+        }
+        if(state is DeleteNotesFailed){
+          print("Notes successfully FAILED");
+          setState(() {
+            showPopup=true;
+            popupMessage= "Error updating note";
+            closeButtonColor= Colors.red;
+            onYes=(){};
+            isConfirmShown= false;
+          });
+          _startTimeout();
+        }
       },
       child: Stack(
         children: [
@@ -134,13 +150,23 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
                   onTap: () {
                     if(noteContentController.text.isNotEmpty){
                       if(widget.docID==null) {
-                        notesBloc.add(WriteNotes(title: noteTitleController.text, note: noteTitleController.text));
-                        // notesBloc.add(WriteNotes(note: txtController.text));
+                        notesBloc.add(WriteNotes(title: noteTitleController.text, note: noteContentController.text));
                       }else{
                         notesBloc.add(UpdateNotes(iD: widget.docID!, title: noteTitleController.text, note: noteContentController.text));
                       }
                       // txtController.clear();
                       // Navigator.of(context).pop();
+                    }else{
+                      //Say note content is empty!
+                      print("NOTE CONTENT IS EMPTY");
+                      setState(() {
+                        showPopup=true;
+                        popupMessage= "Note content is empty!";
+                        closeButtonColor= Colors.amber;
+                        onYes=(){};
+                        isConfirmShown= false;
+                      });
+                      _startTimeout();
                     }
                     print("PRINTED OUTTTTTTTTTTTTT");
                     print(noteTitleController.text);

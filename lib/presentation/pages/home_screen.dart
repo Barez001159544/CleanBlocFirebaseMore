@@ -1,3 +1,4 @@
+import "package:crud/core/theme_data.dart";
 import "package:crud/presentation/blocs/notes_bloc.dart";
 import "package:crud/presentation/blocs/notes_events.dart";
 import "package:crud/presentation/blocs/notes_state.dart";
@@ -20,8 +21,8 @@ final NotesBloc notesBloc= NotesBloc(notesRepository: notesRepository,);
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin{
   late final TabController _tabController;
-  String numOfNotes="-";
   bool fromNewest=true;
+  String numOfNotes="-";
 
   void toggleSortingOrder() {
     setState(() {
@@ -37,42 +38,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     _tabController = TabController(length: 1, vsync: this);
   }
   TextEditingController txtController = TextEditingController();
-  void openDialog({String? docID}) {
-    showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              content: TextField(
-                controller: txtController,
-              ),
-              actions: [
-                ElevatedButton(
-                  onPressed: () {
-                    if(docID==null) {
-                      notesBloc.add(WriteNotes(title: "", note: txtController.text));
-                      BlocProvider.of<NotesBloc>(context).add(WriteNotes(title: "", note: txtController.text));
-                    }else{
-                      notesBloc.add(UpdateNotes(iD: docID, title: "", note: txtController.text));
-                    }
-                    txtController.clear();
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("Add"),
-                ),
-              ],
-            ));
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: openDialog,
-        child: Icon(Icons.add),
-      ),
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return [
             SliverAppBar(
-              title: Text("Notes", style: TextStyle(color: Colors.grey, fontSize: 24),),
+              title: Text("Notefy", style: TextStyle(color: Colors.grey, fontSize: 24),),
               floating: false,
               pinned: false,
               snap: false,
@@ -88,9 +61,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 ),
               ],
               bottom: PreferredSize(
-                preferredSize: Size.fromHeight(100),
+                preferredSize: Size.fromHeight(120),
                 child: Container(
-                  height: 100,
+                  height: 120,
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -99,16 +72,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("All Notes", style: TextStyle(fontSize: 40),),
-                          Text("$numOfNotes Notes", style: TextStyle(fontSize: 16),),
+                          Text("All Notes", style: TextStyle(fontSize: 40)),
+                          Text("${numOfNotes} Notes", style: TextStyle(fontSize: 16)),
                         ],
                       ),
+
                       GestureDetector(
                         onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (context)=>WritingAndUpdatingScreen())),
                         child: Container(
                           width: 70,
                           height: 70,
-                          padding: EdgeInsets.all(20),
+                          padding: EdgeInsets.all(25),
                           decoration: BoxDecoration(
                             // color: Colors.blue,
                             border: Border.all(width: 1, color: Colors.grey.shade200),
@@ -132,11 +106,24 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             BlocConsumer<NotesBloc, NotesState>(
               bloc: notesBloc,
               listener: (context, state) {
-                // Handle side effects, if any
+                if(state is ReadNotesLoading){
+                  setState(() {
+                    numOfNotes= "-";
+                  });
+                }
+                if(state is ReadNotesFailed){
+                  setState(() {
+                    numOfNotes= "0";
+                  });
+                }
+                if(state is ReadNotesSuccess){
+                  setState(() {
+                    numOfNotes= notesBloc.notesList.length.toString();
+                  });
+                }
               },
               builder: (context, state) {
                 if (state is ReadNotesInitial || state is ReadNotesLoading) {
-                  numOfNotes="-";
                   return SizedBox(
                     height: 100,
                     width: 100,
@@ -168,7 +155,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   );
                 }
                 if (state is ReadNotesFailed) {
-                  numOfNotes="0";
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -181,7 +167,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     ],
                   );
                 }
-                numOfNotes=notesBloc.notesList.length.toString();
                 return ListView.builder(
                   padding: EdgeInsets.zero,
                   itemCount: notesBloc.notesList.length,
@@ -192,79 +177,49 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           return WritingAndUpdatingScreen(docID: notesBloc.notesList[index].id, noteTitle: notesBloc.notesList[index].title, noteContent: notesBloc.notesList[index].note, cuDate: "${DateTime.fromMillisecondsSinceEpoch(notesBloc.notesList[index].timestamp.millisecondsSinceEpoch).toString().split(" ")[0]} | ${DateTime.fromMillisecondsSinceEpoch(notesBloc.notesList[index].timestamp.millisecondsSinceEpoch).toString().split(" ")[1].split(".")[0]}",);
                         }));
                       },
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              SizedBox(
-                                height: 50,
-                                width: 50,
-                                child: Center(child: Text((index+1).toString().padLeft(2, "0"))),
-                              ),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                  child: Text(notesBloc.notesList[index].title, style: TextStyle(fontSize: 45),),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 50,
-                                height: 50,
-                              ),
-                              Expanded(
-                                child: Container(
+                      child: Container(
+                        color: themeData.scaffoldBackgroundColor,
+                        margin: EdgeInsets.only(bottom: 30),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                SizedBox(
                                   height: 50,
-                                  padding: EdgeInsets.only(bottom: 5),
-                                  decoration: BoxDecoration(
-                                      border: Border(
-                                        bottom: BorderSide(color: Colors.white, width: 1),
-                                      ),
-                                  ),
-                                  child: Align(
-                                    alignment: Alignment.bottomLeft,
-                                    child: Text("${DateTime.fromMillisecondsSinceEpoch(notesBloc.notesList[index].timestamp.millisecondsSinceEpoch).toString().split(" ")[0]} | ${DateTime.fromMillisecondsSinceEpoch(notesBloc.notesList[index].timestamp.millisecondsSinceEpoch).toString().split(" ")[1].split(".")[0]}",),
+                                  width: 50,
+                                  child: Center(child: Text((index+1).toString().padLeft(2, "0"))),
+                                ),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                    child: Text(notesBloc.notesList[index].title.isNotEmpty?notesBloc.notesList[index].title:"${DateTime.fromMillisecondsSinceEpoch(notesBloc.notesList[index].timestamp.millisecondsSinceEpoch).toString().split(" ")[0]}", style: TextStyle(fontSize: 45),),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    height: 50,
+                                    padding: EdgeInsets.only(bottom: 10),
+                                    decoration: BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(color: Colors.white, width: 1),
+                                        ),
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.bottomLeft,
+                                      child: Text("${DateTime.fromMillisecondsSinceEpoch(notesBloc.notesList[index].timestamp.millisecondsSinceEpoch).toString().split(" ")[0]} | ${DateTime.fromMillisecondsSinceEpoch(notesBloc.notesList[index].timestamp.millisecondsSinceEpoch).toString().split(" ")[1].split(".")[0]}",),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          // Expanded(
-                          //   child: Container(
-                          //     height: 100,
-                          //     decoration: BoxDecoration(
-                          //       border: Border(
-                          //         bottom: BorderSide(color: Colors.white, width: 1),
-                          //       )
-                          //     ),
-                          //   ),
-                          // ),
-                        ],
-                      ),
-                    );
-                    return ListTile(
-                      title: Text(
-                        notesBloc.notesList[index].note,
-                        style: const TextStyle(color: Colors.black),
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              openDialog(docID: notesBloc.notesList[index].id);
-                            },
-                            icon: const Icon(Icons.settings_rounded),
-                          ),
-                          const SizedBox(width: 5),
-                          IconButton(
-                            onPressed: () {
-                              notesBloc.add(DeleteNotes(iD: notesBloc.notesList[index].id));
-                            },
-                            icon: const Icon(Icons.delete),
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
