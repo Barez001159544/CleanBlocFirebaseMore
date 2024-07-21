@@ -20,7 +20,7 @@ final NotesBloc notesBloc= NotesBloc(notesRepository: notesRepository,);
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin{
   late final TabController _tabController;
-  String numOfNotes="";
+  String numOfNotes="-";
   bool fromNewest=true;
 
   void toggleSortingOrder() {
@@ -95,27 +95,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      BlocListener<NotesBloc, NotesState>(
-                        listener: (context, state){
-    if(state is ReadNotesInitial || state is ReadNotesLoading){
-      numOfNotes="-";
-    }
-    if(state is ReadNotesFailed){
-      numOfNotes="0";
-    }
-    if(state is ReadNotesSuccess){
-      numOfNotes= notesBloc.notesList.length.toString();
-    }
-                        },
-                        bloc: notesBloc,
-                          child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                      Text("All Notes", style: TextStyle(fontSize: 40),),
-                  Text("$numOfNotes Notes", style: TextStyle(fontSize: 16),),
-                  ],
-                ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("All Notes", style: TextStyle(fontSize: 40),),
+                          Text("$numOfNotes Notes", style: TextStyle(fontSize: 16),),
+                        ],
                       ),
                       GestureDetector(
                         onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (context)=>WritingAndUpdatingScreen())),
@@ -150,6 +136,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               },
               builder: (context, state) {
                 if (state is ReadNotesInitial || state is ReadNotesLoading) {
+                  numOfNotes="-";
                   return SizedBox(
                     height: 100,
                     width: 100,
@@ -167,9 +154,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         ),
                         SizedBox(height: 10),
                         SizedBox(
-                          width: 100, // Set the width to match the LinearProgressIndicator
+                          width: 100,
                           child: FittedBox(
-                            fit: BoxFit.fill, // Ensure the text scales down to fit within the box
+                            fit: BoxFit.fill,
                             child: Text(
                               "Loading...",
                               style: TextStyle(color: Colors.grey),
@@ -181,6 +168,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   );
                 }
                 if (state is ReadNotesFailed) {
+                  numOfNotes="0";
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -193,6 +181,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     ],
                   );
                 }
+                numOfNotes=notesBloc.notesList.length.toString();
                 return ListView.builder(
                   padding: EdgeInsets.zero,
                   itemCount: notesBloc.notesList.length,
