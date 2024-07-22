@@ -39,6 +39,7 @@ dependencies:
   cloud_firestore: ^5.0.2
   flutter_bloc: ^8.1.6
   dartz: ^0.10.1
+  page_transition: ^2.1.0
 
 dev_dependencies:
   flutter_test:
