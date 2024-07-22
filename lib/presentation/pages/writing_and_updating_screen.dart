@@ -98,12 +98,14 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
           Scaffold(
             appBar: AppBar(
               leadingWidth: 100,
+              surfaceTintColor: Colors.transparent,
               // backgroundColor: Colors.blue,
               leading: GestureDetector(
                 onTap: () {
                   Navigator.of(context).pop();
                 },
                 child: Container(
+                  color: themeData.scaffoldBackgroundColor,
                   constraints: BoxConstraints(maxWidth: 100),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -134,9 +136,10 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
                     });
                     // Navigator.of(context).pop();
                   },
-                  child: SizedBox(
+                  child: Container(
                     height: kToolbarHeight,
                     width: 100,
+                    color: themeData.scaffoldBackgroundColor,
                     child: Center(child: Text("DELETE", style: TextStyle(fontSize: 18, color: Colors.red),)),
                   ),
                 ),
@@ -172,9 +175,10 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
                     print(noteTitleController.text);
                     print(noteContentController.text);
                   },
-                  child: SizedBox(
+                  child: Container(
                     height: kToolbarHeight,
                     width: 100,
+                    color: themeData.scaffoldBackgroundColor,
                     child: Center(child: Text("DONE", style: TextStyle(fontSize: 18, color: Colors.green),)),
                   ),
                 ),

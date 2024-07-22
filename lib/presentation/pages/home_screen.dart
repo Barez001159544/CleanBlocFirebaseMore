@@ -54,10 +54,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               actions: [
                 GestureDetector(
                   onTap: ()=> toggleSortingOrder(),
-                  child: Image.asset(
-                    height: 32,
-                    width: 32,
-                    fromNewest?"assets/images/sorting.png":"assets/images/desorting.png",
+                  child: Container(
+                    color: themeData.scaffoldBackgroundColor,
+                    margin: EdgeInsets.only(right: 15),
+                    child: Image.asset(
+                      height: 32,
+                      width: 32,
+                      fromNewest?"assets/images/sorting.png":"assets/images/desorting.png",
+                    ),
                   ),
                 ),
               ],
@@ -81,8 +85,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       GestureDetector(
                         onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (context)=>WritingAndUpdatingScreen())),
                         child: Container(
-                          width: 70,
-                          height: 70,
+                          width: 80,
+                          height: 80,
                           padding: EdgeInsets.all(25),
                           decoration: BoxDecoration(
                             // color: Colors.blue,
@@ -178,14 +182,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             context,
                             PageTransition(
                               type: PageTransitionType.rightToLeft,
-                              duration: Duration(milliseconds: 500),
+                              duration: Duration(milliseconds: 400),
                               child: WritingAndUpdatingScreen(docID: notesBloc.notesList[index].id, noteTitle: notesBloc.notesList[index].title, noteContent: notesBloc.notesList[index].note, cuDate: "${DateTime.fromMillisecondsSinceEpoch(notesBloc.notesList[index].timestamp.millisecondsSinceEpoch).toString().split(" ")[0]} | ${DateTime.fromMillisecondsSinceEpoch(notesBloc.notesList[index].timestamp.millisecondsSinceEpoch).toString().split(" ")[1].split(".")[0]}",),
                           ),
                         );
                       },
                       child: Container(
                         color: themeData.scaffoldBackgroundColor,
-                        margin: EdgeInsets.only(bottom: 30),
+                        margin: EdgeInsets.only(bottom: 20),
                         child: Column(
                           children: [
                             Row(
