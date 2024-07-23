@@ -62,11 +62,23 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
     return BlocListener(
       bloc: notesBloc,
       listener: (context, state){
+        if(state is WriteNotesSuccess){
+          Navigator.of(context).pop();
+        }
+        if(state is WriteNotesFailed){
+          setState(() {
+            showPopup=true;
+            popupMessage= "Error updating note";
+            closeButtonColor= Colors.red;
+            onYes=(){};
+            isConfirmShown= false;
+          });
+          _startTimeout();
+        }
         if(state is UpdateNotesSuccess){
-          print("Notes successfully UPDATED");
+          //
         }
         if(state is UpdateNotesFailed){
-          print("Notes successfully FAILED");
           setState(() {
             showPopup=true;
             popupMessage= "Error updating note";
@@ -78,11 +90,9 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
         }
 
         if(state is DeleteNotesSuccess){
-          print("Notes successfully UPDATED");
           Navigator.of(context).pop();
         }
         if(state is DeleteNotesFailed){
-          print("Notes successfully FAILED");
           setState(() {
             showPopup=true;
             popupMessage= "Error updating note";
@@ -99,7 +109,6 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
             appBar: AppBar(
               leadingWidth: 100,
               surfaceTintColor: Colors.transparent,
-              // backgroundColor: Colors.blue,
               leading: GestureDetector(
                 onTap: () {
                   Navigator.of(context).pop();
@@ -160,8 +169,6 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
                       // txtController.clear();
                       // Navigator.of(context).pop();
                     }else{
-                      //Say note content is empty!
-                      print("NOTE CONTENT IS EMPTY");
                       setState(() {
                         showPopup=true;
                         popupMessage= "Note content is empty!";
@@ -171,9 +178,6 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
                       });
                       _startTimeout();
                     }
-                    print("PRINTED OUTTTTTTTTTTTTT");
-                    print(noteTitleController.text);
-                    print(noteContentController.text);
                   },
                   child: Container(
                     height: kToolbarHeight,

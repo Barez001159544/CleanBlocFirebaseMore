@@ -107,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         },
         body: TabBarView(
           controller: _tabController,
-          children: <Widget>[
+          children: [
             BlocConsumer<NotesBloc, NotesState>(
               bloc: notesBloc,
               listener: (context, state) {
