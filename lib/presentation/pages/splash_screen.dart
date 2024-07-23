@@ -13,9 +13,9 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 3), (){
+    Future.delayed(const Duration(seconds: 3), (){
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
-        return HomeScreen();
+        return const HomeScreen();
       }));
     });
   }
@@ -26,17 +26,17 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Spacer(),
+            const Spacer(),
             SvgPicture.asset(
               height: 100,
               width: 100,
               color: Colors.white,
                 "assets/images/note_logo.svg",
             ),
-            SizedBox(height: 10,),
-            Text("Notefy", style: TextStyle(fontSize: 20),),
-            Spacer(),
-            SizedBox(
+            const SizedBox(height: 10,),
+            const Text("Notefy", style: TextStyle(fontSize: 20),),
+            const Spacer(),
+            const SizedBox(
               height: 1,
               width: 100,
               child: LinearProgressIndicator(
@@ -45,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 color: Colors.black,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
           ],

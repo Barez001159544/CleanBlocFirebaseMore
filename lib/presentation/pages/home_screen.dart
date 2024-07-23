@@ -197,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 SizedBox(
                                   height: 50,
                                   width: 50,
-                                  child: Center(child: Text((index+1).toString().padLeft(2, "0"))),
+                                  child: Center(child: Text((fromNewest?index+1:int.parse(numOfNotes)-index).toString().padLeft(2, "0"))),
                                 ),
                                 Align(
                                   alignment: Alignment.centerLeft,
