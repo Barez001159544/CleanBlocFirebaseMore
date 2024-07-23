@@ -2,6 +2,7 @@ import 'package:crud/core/theme_data.dart';
 import 'package:crud/presentation/blocs/notes_bloc.dart';
 import 'package:crud/firebase_options.dart';
 import 'package:crud/presentation/pages/home_screen.dart';
+import 'package:crud/presentation/pages/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: themeData,
         debugShowCheckedModeBanner: false,
-        home: HomeScreen(),
+        home: SplashScreen(),
       ),
     );
   }
