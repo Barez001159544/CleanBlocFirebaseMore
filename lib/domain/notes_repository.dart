@@ -40,6 +40,7 @@ class NotesRepository implements INotesRepository{
     }
   }
 
+  @override
   Future<Either<Exception, dynamic>> deleteNote(String ID) async {
     try {
       final result = await remote.deleteNote(ID);

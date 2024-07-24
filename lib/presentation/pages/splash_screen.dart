@@ -13,12 +13,15 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 3), (){
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
+    Future.delayed(const Duration(seconds: 5), (){
+      if(mounted) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
         return const HomeScreen();
       }));
+      }
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,21 +33,13 @@ class _SplashScreenState extends State<SplashScreen> {
             SvgPicture.asset(
               height: 100,
               width: 100,
-              color: Colors.white,
+              colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                 "assets/images/note_logo.svg",
             ),
             const SizedBox(height: 10,),
             const Text("Notefy", style: TextStyle(fontSize: 20),),
             const Spacer(),
-            const SizedBox(
-              height: 1,
-              width: 100,
-              child: LinearProgressIndicator(
-                minHeight: 1,
-                backgroundColor: Colors.grey,
-                color: Colors.black,
-              ),
-            ),
+            const Text("NOTE YOUR LIFE", style: TextStyle(fontSize: 16, color: Colors.grey),),
             const SizedBox(
               height: 20,
             ),

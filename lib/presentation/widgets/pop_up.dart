@@ -44,7 +44,6 @@ class _PopUpWidgetState extends State<PopUpWidget> {
                     setState(() {
                       widget.isConfirmShown?widget.showPopup=false:null;
                     });
-                    print("CLOSE");
                   },
                   child: Container(
                     color: widget.closeButtonColor,
@@ -56,7 +55,7 @@ class _PopUpWidgetState extends State<PopUpWidget> {
                 Expanded(
                   child: Center(
                     child: Text(widget.message,
-                      style: TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18),
                     ),
                   ),
                 ),
@@ -64,7 +63,6 @@ class _PopUpWidgetState extends State<PopUpWidget> {
                 GestureDetector(
                   onTap: (){
                     widget.onYes();
-                    print("YES");
                     setState(() {
                       widget.showPopup=false;
                     });
@@ -73,12 +71,12 @@ class _PopUpWidgetState extends State<PopUpWidget> {
                     height: 70,
                     width: 70,
                     color: Colors.white,
-                    child: Center(
+                    child: const Center(
                       child: Text("Yes",
                         style: TextStyle(color: Colors.black, fontSize: 18),),
                     ),
                   ),
-                ):SizedBox(width: 70, height: 70,),
+                ):const SizedBox(width: 70, height: 70,),
               ],
             ),
           ),

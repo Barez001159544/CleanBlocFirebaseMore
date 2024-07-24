@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dartz/dartz.dart';
 
 class FirestoreServices{
 
@@ -19,7 +18,6 @@ class FirestoreServices{
   }
 
   Stream<QuerySnapshot<Object?>> listenToChanges(bool fromNewest) {
-    print(fromNewest);
     return notes.orderBy("timestamp", descending: fromNewest).snapshots();
   }
 

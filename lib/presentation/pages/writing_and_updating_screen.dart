@@ -2,11 +2,10 @@ import 'package:crud/core/theme_data.dart';
 import 'package:crud/presentation/blocs/notes_bloc.dart';
 import 'package:crud/presentation/blocs/notes_events.dart';
 import 'package:crud/presentation/blocs/notes_state.dart';
+import 'package:crud/presentation/widgets/delAndUpButton.dart';
 import 'package:crud/presentation/widgets/pop_up.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../data/firestore_services.dart';
 import '../../domain/notes_repository.dart';
 
@@ -31,7 +30,6 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
   final NotesBloc notesBloc= NotesBloc(notesRepository: NotesRepository(remote: FirestoreServices()),);
   late TextEditingController noteTitleController;
   late TextEditingController noteContentController;
-
   bool showPopup=false;
   String popupMessage= "Sure you want to delete?";
   Color closeButtonColor= Colors.grey;
@@ -48,7 +46,7 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
 
 
   void _startTimeout() {
-    Future.delayed(Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 5), () {
       if (mounted) {
         setState(() {
           showPopup = false;
@@ -75,9 +73,6 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
           });
           _startTimeout();
         }
-        if(state is UpdateNotesSuccess){
-          //
-        }
         if(state is UpdateNotesFailed){
           setState(() {
             showPopup=true;
@@ -87,10 +82,6 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
             isConfirmShown= false;
           });
           _startTimeout();
-        }
-
-        if(state is DeleteNotesSuccess){
-          Navigator.of(context).pop();
         }
         if(state is DeleteNotesFailed){
           setState(() {
@@ -115,7 +106,7 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
                 },
                 child: Container(
                   color: themeData.scaffoldBackgroundColor,
-                  constraints: BoxConstraints(maxWidth: 100),
+                  constraints: const BoxConstraints(maxWidth: 100),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -124,16 +115,17 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
                         width: 32,
                         "assets/images/right-arrow.png",
                       ),
-                      SizedBox(width: 10,),
-                      Text("BACK", style: TextStyle(fontSize: 18),),
+                      const SizedBox(width: 10,),
+                      const Text("BACK", style: TextStyle(fontSize: 18),),
                     ],
                   ),
                 ),
               ),
               actions: [
                 if(widget.docID!=null)
-                GestureDetector(
-                  onTap: () {
+                SizedBox(
+                  width: 100,
+                  child: DeleteAndUpdateButton(btnText: "DELETE", btnTextColor: Colors.red, onClick: (){
                     setState(() {
                       showPopup=true;
                       popupMessage= "Sure you want to delete?";
@@ -143,14 +135,7 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
                       };
                       isConfirmShown= true;
                     });
-                    // Navigator.of(context).pop();
-                  },
-                  child: Container(
-                    height: kToolbarHeight,
-                    width: 100,
-                    color: themeData.scaffoldBackgroundColor,
-                    child: Center(child: Text("DELETE", style: TextStyle(fontSize: 18, color: Colors.red),)),
-                  ),
+                  }),
                 ),
                 if(widget.docID!=null)
                 Container(
@@ -158,16 +143,15 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
                   width: 1,
                   color: Colors.grey,
                 ),
-                GestureDetector(
-                  onTap: () {
+                SizedBox(
+                  width: 100,
+                  child: DeleteAndUpdateButton(btnText: "DONE", btnTextColor: Colors.green, onClick: (){
                     if(noteContentController.text.isNotEmpty){
                       if(widget.docID==null) {
                         notesBloc.add(WriteNotes(title: noteTitleController.text, note: noteContentController.text));
                       }else{
                         notesBloc.add(UpdateNotes(iD: widget.docID!, title: noteTitleController.text, note: noteContentController.text));
                       }
-                      // txtController.clear();
-                      // Navigator.of(context).pop();
                     }else{
                       setState(() {
                         showPopup=true;
@@ -178,13 +162,7 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
                       });
                       _startTimeout();
                     }
-                  },
-                  child: Container(
-                    height: kToolbarHeight,
-                    width: 100,
-                    color: themeData.scaffoldBackgroundColor,
-                    child: Center(child: Text("DONE", style: TextStyle(fontSize: 18, color: Colors.green),)),
-                  ),
+                  }),
                 ),
               ],
             ),
@@ -193,29 +171,27 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
               child: ListView(
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 20,),
-                  Text(widget.cuDate!=""?widget.cuDate:"Now", style: TextStyle(fontSize: 18),),
-                  SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
+                  Text(widget.cuDate!=""?widget.cuDate:"Now", style: const TextStyle(fontSize: 18),),
+                  const SizedBox(height: 20,),
                   TextField(
                     controller: noteTitleController,
-                    style: TextStyle(fontSize: 45),
-                    decoration: InputDecoration(
+                    style: const TextStyle(fontSize: 45),
+                    decoration: const InputDecoration(
                       hintText: "Title",
                       contentPadding: EdgeInsets.zero,
                       border: InputBorder.none,
                     ),
                     maxLines: 1,
                   ),
-                  SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
                   TextField(
                     controller: noteContentController,
-                    style: TextStyle(fontSize: 14),
+                    style: const TextStyle(fontSize: 14),
                     maxLines: null,
-                    decoration: InputDecoration(
-                      hintText: "Content all over here...",
+                    decoration: const InputDecoration(
+                      hintText: "Write note content here...",
                       contentPadding: EdgeInsets.zero,
-                      // fillColor: Colors.green,
-                      // filled: true,
                       border: InputBorder.none,
                     ),
                   ),
