@@ -21,6 +21,7 @@ class _DeleteAndUpdateButtonState extends State<DeleteAndUpdateButton> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: GestureDetector(
         onTap:()=> widget.onClick(),
         child: Container(
