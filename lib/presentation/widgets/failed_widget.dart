@@ -8,7 +8,7 @@ Widget failedReadWidget() {
       const SizedBox(
         height: 10,
       ),
-      const Text("An Error Occurred"),
+      const Text("An Error Occurred\nor no notes available", textAlign: TextAlign.center, style: TextStyle(color: Colors.grey),),
     ],
   );
 }

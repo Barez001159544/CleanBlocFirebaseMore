@@ -18,6 +18,7 @@ class FirestoreServices{
   }
 
   Stream<QuerySnapshot<Object?>> listenToChanges(bool fromNewest) {
+    print(fromNewest);
     return notes.orderBy("timestamp", descending: fromNewest).snapshots();
   }
 

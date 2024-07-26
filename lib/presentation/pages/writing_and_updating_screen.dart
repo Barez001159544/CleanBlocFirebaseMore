@@ -60,9 +60,7 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
     return BlocListener(
       bloc: notesBloc,
       listener: (context, state){
-        if(state is WriteNotesSuccess){
-          Navigator.of(context).pop();
-        }
+        if(state is WriteNotesSuccess) Navigator.of(context).pop();
         if(state is WriteNotesFailed){
           setState(() {
             showPopup=true;
@@ -83,6 +81,8 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
           });
           _startTimeout();
         }
+        if(state is DeleteNotesSuccess) Navigator.of(context).pop();
+
         if(state is DeleteNotesFailed){
           setState(() {
             showPopup=true;
