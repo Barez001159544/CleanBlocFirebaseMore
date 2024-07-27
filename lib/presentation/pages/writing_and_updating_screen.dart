@@ -106,6 +106,7 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
                 },
                 child: Container(
                   color: themeData.scaffoldBackgroundColor,
+                  margin: const EdgeInsets.only(left: 10),
                   constraints: const BoxConstraints(maxWidth: 100),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
