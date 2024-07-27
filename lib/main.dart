@@ -2,6 +2,7 @@ import 'package:crud/core/theme_data.dart';
 import 'package:crud/data/firestore_services.dart';
 import 'package:crud/presentation/blocs/notes_bloc.dart';
 import 'package:crud/firebase_options.dart';
+import 'package:crud/presentation/pages/onboarding_screen.dart';
 import 'package:crud/presentation/pages/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: themeData,
         debugShowCheckedModeBanner: false,
-        home: const SplashScreen(),
+        home: const OnboardingScreen(),
       ),
     );
   }
