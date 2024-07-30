@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:crud/core/theme_data.dart';
+import 'package:crud/presentation/pages/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -13,67 +14,98 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              flex: 9,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-                child: Center(
-                  child: AutoSizeText(
-                    textAlign: TextAlign.left,
-                    "Hey, \nSome Texts above, \nThis texts cover, \nthe entire screen, \nexcept for a button below",
-                    maxFontSize: 240,
-                    minFontSize: 24,
-                    style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width,
-                      color: Colors.white,
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/onboarding_background.png"),
+                fit: BoxFit.fill,
+              ),
+              color: Colors.blue,
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withOpacity(0.5),
+                  Colors.black.withOpacity(0.9),
+                ],
+              ),
+            ),
+          ),
+          SafeArea(
+            child: Column(
+              children: [
+                SizedBox(height: 48,),
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0,),
+                    child: Center(
+                      child: AutoSizeText(
+                        textAlign: TextAlign.left,
+                        "Welcome!\nHere You Can Write, Read, Update and Delete Notes Anytime You Like.\nLet's Hop in.",
+                        maxFontSize: 240,
+                        minFontSize: 24,
+                        style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.width,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Container(
-                // color: Colors.red,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(right: 16),
-                      decoration: BoxDecoration(
-                        // color: Colors.blue,
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Colors.white,
-                            width: 1,
-                          ),
-                        ),
-                      ),
-                      child: TextButton(
+                SizedBox(height: 48,),
+                Container(
+                  // color: Colors.red,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
                         style: ButtonStyle(
                           padding: WidgetStateProperty.all(EdgeInsets.zero),
                           backgroundColor: WidgetStateProperty.all(themeData.scaffoldBackgroundColor),
+                          shape: WidgetStateProperty.all(LinearBorder.none),
                         ),
-                          onPressed: (){},
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("Continue to Notefy"),
-                              SizedBox(width: 10,),
-                              Icon(Icons.arrow_forward, size: 16,),
-                            ],
+                        onPressed: (){
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
+                            return HomeScreen();
+                          }));
+                          },
+                        child: Container(
+                          margin: EdgeInsets.fromLTRB(8, 4, 24, 8),
+                          decoration: BoxDecoration(
+                            // color: Colors.blue,
+                            // border: Border(
+                            //   bottom: BorderSide(
+                            //     color: Colors.white,
+                            //     width: 1,
+                            //   ),
+                            // ),
                           ),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("Continue to Notefy"),
+                                SizedBox(width: 10,),
+                                Icon(Icons.arrow_forward, size: 16,),
+                              ],
+                            ),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
+                SizedBox(height: 48,),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
