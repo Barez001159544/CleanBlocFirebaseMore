@@ -1,3 +1,4 @@
+import 'package:crud/core/local_data.dart';
 import 'package:crud/presentation/pages/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -13,6 +14,9 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    hiveHelper.init();
+    bool firstTime = hiveHelper.getValue(key: "firstTime");
+    print(firstTime);
     Future.delayed(const Duration(seconds: 3), (){
       if(mounted) {
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
