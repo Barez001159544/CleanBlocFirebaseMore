@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:crud/core/theme_data.dart';
 import 'package:crud/presentation/pages/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 class OnboardingScreen extends StatefulWidget {
    const OnboardingScreen({super.key});
@@ -73,9 +74,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           shape: WidgetStateProperty.all(LinearBorder.none),
                         ),
                         onPressed: (){
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
-                            return HomeScreen();
-                          }));
+                          Navigator.of(context).pushReplacement(
+                              PageTransition(
+                                type: PageTransitionType.rightToLeft,
+                                duration: const Duration(milliseconds: 400),
+                                curve: Curves.easeIn,
+                                child: HomeScreen(),
+                              ),
+                          );
                           },
                         child: Container(
                           margin: EdgeInsets.fromLTRB(8, 4, 24, 8),
