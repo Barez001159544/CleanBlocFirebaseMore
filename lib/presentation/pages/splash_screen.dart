@@ -9,13 +9,16 @@ class SplashScreen extends StatefulWidget {
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
-
+bool? firstTime;
 class _SplashScreenState extends State<SplashScreen> {
+  void getFirstTime()async{
+    firstTime = await hiveHelper.getValue(key: "firstTime");
+  }
   @override
   void initState() {
     super.initState();
     hiveHelper.init();
-    bool firstTime = hiveHelper.getValue(key: "firstTime");
+    getFirstTime();
     print(firstTime);
     Future.delayed(const Duration(seconds: 3), (){
       if(mounted) {
