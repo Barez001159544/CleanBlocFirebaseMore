@@ -19,7 +19,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("assets/images/onboarding_background.png"),
                 fit: BoxFit.fill,
@@ -44,10 +44,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           SafeArea(
             child: Column(
               children: [
-                SizedBox(height: 48,),
+                const SizedBox(height: 48,),
                 Expanded(
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0,),
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0,),
                     child: Center(
                       child: AutoSizeText(
                         textAlign: TextAlign.left,
@@ -62,54 +62,42 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 48,),
-                Container(
-                  // color: Colors.red,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        style: ButtonStyle(
-                          padding: WidgetStateProperty.all(EdgeInsets.zero),
-                          backgroundColor: WidgetStateProperty.all(themeData.scaffoldBackgroundColor),
-                          shape: WidgetStateProperty.all(LinearBorder.none),
-                        ),
-                        onPressed: (){
-                          hiveHelper.createOrUpdate("firstTime", true);
-                          Navigator.of(context).pushReplacement(
-                              PageTransition(
-                                type: PageTransitionType.rightToLeft,
-                                duration: const Duration(milliseconds: 400),
-                                curve: Curves.easeIn,
-                                child: HomeScreen(),
-                              ),
-                          );
-                          },
-                        child: Container(
-                          margin: EdgeInsets.fromLTRB(8, 4, 24, 8),
-                          decoration: BoxDecoration(
-                            // color: Colors.blue,
-                            // border: Border(
-                            //   bottom: BorderSide(
-                            //     color: Colors.white,
-                            //     width: 1,
-                            //   ),
-                            // ),
-                          ),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("Continue to Notefy"),
-                                SizedBox(width: 10,),
-                                Icon(Icons.arrow_forward, size: 16,),
-                              ],
-                            ),
-                        ),
+                const SizedBox(height: 48,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      style: ButtonStyle(
+                        padding: WidgetStateProperty.all(EdgeInsets.zero),
+                        backgroundColor: WidgetStateProperty.all(themeData.scaffoldBackgroundColor),
+                        shape: WidgetStateProperty.all(LinearBorder.none),
                       ),
-                    ],
-                  ),
+                      onPressed: (){
+                        hiveHelper.createOrUpdate("firstTime", true);
+                        Navigator.of(context).pushReplacement(
+                            PageTransition(
+                              type: PageTransitionType.rightToLeft,
+                              duration: const Duration(milliseconds: 400),
+                              curve: Curves.easeIn,
+                              child: const HomeScreen(),
+                            ),
+                        );
+                        },
+                      child: Container(
+                        margin: const EdgeInsets.fromLTRB(8, 4, 24, 8),
+                        child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Continue to Notefy"),
+                              SizedBox(width: 10,),
+                              Icon(Icons.arrow_forward, size: 16,),
+                            ],
+                          ),
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 48,),
+                const SizedBox(height: 48,),
               ],
             ),
           ),
