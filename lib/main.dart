@@ -18,6 +18,7 @@ void main() async{
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await Hive.initFlutter();
   await hiveHelper.init();
+
   runApp(MyApp());
 }
 
@@ -27,6 +28,20 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
   @override
   Widget build(BuildContext context) {
+
+    final   List _allAsset = [
+      "assets/images/add.png",
+      "assets/images/alert.png",
+      "assets/images/desorting.png",
+      "assets/images/onboarding_background.png",
+      "assets/images/plus.png",
+      "assets/images/right-arrow.png",
+      "assets/images/sorting.png",
+    ];
+      for(var asset in _allAsset) {
+        precacheImage(AssetImage(asset), context);
+      }
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<NotesBloc>(
