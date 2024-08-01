@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final   List _allAsset = [
+    final List allAsset = [
       "assets/images/add.png",
       "assets/images/alert.png",
       "assets/images/desorting.png",
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
       "assets/images/right-arrow.png",
       "assets/images/sorting.png",
     ];
-      for(var asset in _allAsset) {
+      for(var asset in allAsset) {
         precacheImage(AssetImage(asset), context);
       }
 
