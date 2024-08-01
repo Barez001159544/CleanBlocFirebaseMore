@@ -1,3 +1,4 @@
+import 'package:animate_text/animate_text.dart';
 import 'package:crud/core/local_data.dart';
 import 'package:crud/presentation/pages/home_screen.dart';
 import 'package:crud/presentation/pages/onboarding_screen.dart';
@@ -43,12 +44,10 @@ class _SplashScreenState extends State<SplashScreen> {
                 "assets/images/note_logo.svg",
             ),
             const SizedBox(height: 10,),
-            const Text("Notefy", style: TextStyle(fontSize: 20),),
+            const AnimateText("Notefy", style: TextStyle(fontSize: 20), type: AnimateTextType.topLeftToBottomRight,),
             const Spacer(),
             const Text("NOTE YOUR LIFE", style: TextStyle(fontSize: 16, color: Colors.grey),),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20,),
           ],
         ),
       ),

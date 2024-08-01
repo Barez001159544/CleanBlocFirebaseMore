@@ -44,6 +44,7 @@ dependencies:
   auto_size_text: ^3.0.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  animate_text: ^1.0.0
 
 dev_dependencies:
   flutter_test:
