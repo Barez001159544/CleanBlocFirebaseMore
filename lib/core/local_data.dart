@@ -1,14 +1,15 @@
 import 'package:hive/hive.dart';
 
 class HiveHelper{
-  String _boxName = "noteBox";
+  final String _boxName = "noteBox";
 
   Future<void> init() async {
-    await Hive.openBox(_boxName);
+      await Hive.openBox(_boxName);
   }
 
   Future<void> createOrUpdate(String key, dynamic data) async {
-    await Hive.box<String>(_boxName).put(key, data);
+    final box = Hive.box(_boxName);
+    await box.put(key, data);
   }
 
   Future<void> deleteValue(String key) async {

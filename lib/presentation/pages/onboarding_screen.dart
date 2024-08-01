@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:crud/core/local_data.dart';
 import 'package:crud/core/theme_data.dart';
 import 'package:crud/presentation/pages/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -74,6 +75,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           shape: WidgetStateProperty.all(LinearBorder.none),
                         ),
                         onPressed: (){
+                          hiveHelper.createOrUpdate("firstTime", true);
                           Navigator.of(context).pushReplacement(
                               PageTransition(
                                 type: PageTransitionType.rightToLeft,
