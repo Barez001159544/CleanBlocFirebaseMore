@@ -1,5 +1,6 @@
 import 'package:animate_text/animate_text.dart';
 import 'package:crud/core/local_data.dart';
+import 'package:crud/core/router_helper.dart';
 import 'package:crud/presentation/pages/home_screen.dart';
 import 'package:crud/presentation/pages/onboarding_screen.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
     getFirstTime();
     Future.delayed(const Duration(seconds: 3), (){
       if(mounted) {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
-        return firstTime==null?const OnboardingScreen():const HomeScreen();
-      }));
+        routerHelper.goto(screen: firstTime==null?const OnboardingScreen():const HomeScreen(), replace: true);
       }
     });
   }

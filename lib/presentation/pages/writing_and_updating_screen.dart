@@ -1,3 +1,4 @@
+import 'package:crud/core/router_helper.dart';
 import 'package:crud/core/theme_data.dart';
 import 'package:crud/presentation/blocs/notes_bloc.dart';
 import 'package:crud/presentation/blocs/notes_events.dart';
@@ -60,7 +61,7 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
     return BlocListener(
       bloc: notesBloc,
       listener: (context, state){
-        if(state is WriteNotesSuccess) Navigator.of(context).pop();
+        if(state is WriteNotesSuccess) routerHelper.goBack();
         if(state is WriteNotesFailed){
           setState(() {
             showPopup=true;
@@ -81,7 +82,7 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
           });
           _startTimeout();
         }
-        if(state is DeleteNotesSuccess) Navigator.of(context).pop();
+        if(state is DeleteNotesSuccess) routerHelper.goBack();
 
         if(state is DeleteNotesFailed){
           setState(() {
@@ -102,7 +103,7 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
               surfaceTintColor: Colors.transparent,
               leading: GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pop();
+                  routerHelper.goBack();
                 },
                 child: Container(
                   color: themeData.scaffoldBackgroundColor,

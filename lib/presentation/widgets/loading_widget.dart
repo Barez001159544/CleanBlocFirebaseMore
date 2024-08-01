@@ -13,7 +13,7 @@ Widget loadingReadWidget() {
           child: LinearProgressIndicator(
             minHeight: 1,
             backgroundColor: Colors.grey,
-            color: Colors.black,
+            color: Colors.transparent,
           ),
         ),
         SizedBox(height: 10),

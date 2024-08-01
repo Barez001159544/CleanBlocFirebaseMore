@@ -1,4 +1,5 @@
 import "package:cloud_firestore/cloud_firestore.dart";
+import "package:crud/core/router_helper.dart";
 import "package:crud/core/theme_data.dart";
 import "package:crud/main.dart";
 import "package:crud/presentation/blocs/notes_bloc.dart";
@@ -87,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       ),
 
                       GestureDetector(
-                        onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (context)=>WritingAndUpdatingScreen())),
+                        onTap: ()=> routerHelper.goto(screen: WritingAndUpdatingScreen()),
                         child: Container(
                           width: 80,
                           height: 80,
