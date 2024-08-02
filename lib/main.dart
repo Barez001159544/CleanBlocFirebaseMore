@@ -1,4 +1,5 @@
 import 'package:crud/core/local_data.dart';
+import 'package:crud/core/router_helper.dart';
 import 'package:crud/core/theme_data.dart';
 import 'package:crud/data/firestore_services.dart';
 import 'package:crud/presentation/blocs/notes_bloc.dart';
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: themeData,
+        navigatorKey: RouterHelper.navigationKey,
         debugShowCheckedModeBanner: false,
         home: const SplashScreen(),
       ),
