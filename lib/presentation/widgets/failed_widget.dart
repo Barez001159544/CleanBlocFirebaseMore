@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget failedReadWidget() {
+Widget failedReadWidget(String failureMessage) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -8,7 +8,7 @@ Widget failedReadWidget() {
       const SizedBox(
         height: 10,
       ),
-      const Text("An Error Occurred\nor no notes available", textAlign: TextAlign.center, style: TextStyle(color: Colors.grey),),
+      Text(failureMessage, textAlign: TextAlign.center, style: const TextStyle(color: Colors.grey),),
     ],
   );
 }

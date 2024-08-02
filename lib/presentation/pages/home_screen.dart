@@ -136,8 +136,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 if (state is ReadNotesInitial || state is ReadNotesLoading) {
                   return loadingReadWidget();
                 }
-                if (state is ReadNotesFailed || notesBloc.notesList.isEmpty) {
-                  return failedReadWidget();
+                if (state is ReadNotesFailed) {
+                  return failedReadWidget(state.message);
+                }
+                if (notesBloc.notesList.isEmpty) {
+                  return failedReadWidget("Empty Notes");
                 }
                 return ListView.builder(
                   padding: EdgeInsets.zero,

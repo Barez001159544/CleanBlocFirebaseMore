@@ -6,7 +6,10 @@ class WriteNotesInitial extends NotesState{}
 
 class WriteNotesLoading extends NotesState{}
 
-class WriteNotesFailed extends NotesState{}
+class WriteNotesFailed extends NotesState{
+  final String message;
+  WriteNotesFailed(this.message);
+}
 
 class WriteNotesSuccess extends NotesState{}
 
@@ -16,7 +19,10 @@ class ReadNotesInitial extends NotesState{}
 
 class ReadNotesLoading extends NotesState{}
 
-class ReadNotesFailed extends NotesState{}
+class ReadNotesFailed extends NotesState{
+  final String message;
+  ReadNotesFailed(this.message);
+}
 
 class ReadNotesSuccess extends NotesState{}
 
@@ -26,7 +32,10 @@ class UpdateNotesInitial extends NotesState{}
 
 class UpdateNotesLoading extends NotesState{}
 
-class UpdateNotesFailed extends NotesState{}
+class UpdateNotesFailed extends NotesState{
+  final String message;
+  UpdateNotesFailed(this.message);
+}
 
 class UpdateNotesSuccess extends NotesState{}
 
@@ -36,6 +45,9 @@ class DeleteNotesInitial extends NotesState{}
 
 class DeleteNotesLoading extends NotesState{}
 
-class DeleteNotesFailed extends NotesState{}
+class DeleteNotesFailed extends NotesState{
+  final String message;
+  DeleteNotesFailed(this.message);
+}
 
 class DeleteNotesSuccess extends NotesState{}

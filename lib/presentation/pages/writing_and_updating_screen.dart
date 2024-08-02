@@ -75,7 +75,7 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
         if(state is UpdateNotesFailed){
           setState(() {
             showPopup=true;
-            popupMessage= "Error updating note";
+            popupMessage= state.message;
             closeButtonColor= Colors.red;
             onYes=(){};
             isConfirmShown= false;
@@ -87,7 +87,7 @@ class _WritingAndUpdatingScreenState extends State<WritingAndUpdatingScreen> {
         if(state is DeleteNotesFailed){
           setState(() {
             showPopup=true;
-            popupMessage= "Error updating note";
+            popupMessage= state.message;
             closeButtonColor= Colors.red;
             onYes=(){};
             isConfirmShown= false;
