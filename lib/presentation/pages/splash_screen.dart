@@ -43,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 "assets/images/note_logo.svg",
             ),
             const SizedBox(height: 10,),
-            const AnimateText("Notefy", style: TextStyle(fontSize: 20), type: AnimateTextType.topLeftToBottomRight,),
+            const AnimateText("Notefy", style: TextStyle(fontSize: 20), type: AnimateTextType.topLeftToBottomRight, isRepeat: false,),
             const Spacer(),
             const Text("NOTE YOUR LIFE", style: TextStyle(fontSize: 16, color: Colors.grey),),
             const SizedBox(height: 20,),
