@@ -2,7 +2,9 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:crud/core/local_data.dart';
 import 'package:crud/core/theme_data.dart';
 import 'package:crud/presentation/pages/home_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:page_transition/page_transition.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -72,23 +74,28 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         backgroundColor: WidgetStateProperty.all(themeData.scaffoldBackgroundColor),
                         shape: WidgetStateProperty.all(LinearBorder.none),
                       ),
-                      onPressed: (){
-                        hiveHelper.createOrUpdate("firstTime", true);
-                        Navigator.of(context).pushReplacement(
-                            PageTransition(
-                              type: PageTransitionType.rightToLeft,
-                              duration: const Duration(milliseconds: 400),
-                              curve: Curves.easeIn,
-                              child: const HomeScreen(),
-                            ),
-                        );
+                      onPressed: () async{
+                        final userCredential = await signInWithGoogle();
+                        if (userCredential != null)
+                          print(userCredential);
+                        // hiveHelper.createOrUpdate("firstTime", true);
+                        // Navigator.of(context).pushReplacement(
+                        //     PageTransition(
+                        //       type: PageTransitionType.rightToLeft,
+                        //       duration: const Duration(milliseconds: 400),
+                        //       curve: Curves.easeIn,
+                        //       child: const HomeScreen(),
+                        //     ),
+                        // );
                         },
                       child: Container(
                         margin: const EdgeInsets.fromLTRB(8, 4, 24, 8),
                         child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("Continue to Notefy"),
+                              Text("Continue w/"),
+                              SizedBox(width: 5,),
+                              Text("Google", style: TextStyle(fontFamily: 'Google',),),
                               SizedBox(width: 10,),
                               Icon(Icons.arrow_forward, size: 16,),
                             ],
@@ -104,5 +111,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         ],
       ),
     );
+  }
+}
+
+Future<dynamic> signInWithGoogle() async {
+  try {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication? googleAuth =
+    await googleUser?.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  } on Exception catch (e) {
+    // TODO
+    print('exception->$e');
   }
 }

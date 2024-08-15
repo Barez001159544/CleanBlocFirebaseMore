@@ -23,6 +23,8 @@ dependencies:
   hive_flutter: ^1.1.0
   animate_text: ^1.0.0
   internet_connection_checker: ^1.0.0+1
+  firebase_auth: ^5.1.4
+  google_sign_in: ^6.2.1
 
 dev_dependencies:
   flutter_test:
@@ -41,6 +43,9 @@ flutter:
     - family: Nirmala
       fonts:
         - asset: assets/fonts/Nirmala.ttf
+    - family: Google
+      fonts:
+        - asset: assets/fonts/Poppins-SemiBold.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
     getFirstTime();
     Future.delayed(const Duration(seconds: 3), (){
       if(mounted) {
-        routerHelper.goto(screen: firstTime==null?const OnboardingScreen():const HomeScreen(), replace: true);
+        routerHelper.goto(screen: firstTime!=null?const OnboardingScreen():const HomeScreen(), replace: true);
       }
     });
   }
