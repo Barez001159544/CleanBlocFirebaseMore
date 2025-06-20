@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Evar Stationary',
         theme: themeData,
         navigatorKey: RouterHelper.navigationKey,
         debugShowCheckedModeBanner: false,

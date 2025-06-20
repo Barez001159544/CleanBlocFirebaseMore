@@ -93,9 +93,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("Continue w/"),
-                              SizedBox(width: 5,),
-                              Text("Google", style: TextStyle(fontFamily: 'Google',),),
+                              Text("Continue"),
+                              // SizedBox(width: 5,),
+                              // Text("Google", style: TextStyle(fontFamily: 'Google',),),
                               SizedBox(width: 10,),
                               Icon(Icons.arrow_forward, size: 16,),
                             ],

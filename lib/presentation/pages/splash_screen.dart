@@ -12,18 +12,18 @@ class SplashScreen extends StatefulWidget {
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
-bool? firstTime;
 class _SplashScreenState extends State<SplashScreen> {
-  void getFirstTime()async{
-    firstTime = await hiveHelper.getValue(key: "firstTime");
-  }
+
+  bool? firstTime = hiveHelper.getValue(key: "firstTime");
+
   @override
   void initState() {
     super.initState();
-    getFirstTime();
     Future.delayed(const Duration(seconds: 3), (){
       if(mounted) {
-        routerHelper.goto(screen: firstTime!=null?const OnboardingScreen():const HomeScreen(), replace: true);
+        routerHelper.goto(screen: firstTime == null
+            ? const OnboardingScreen()
+            : const HomeScreen(), replace: true);
       }
     });
   }
