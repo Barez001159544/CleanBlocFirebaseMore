@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return [
             SliverAppBar(
-              title: const Text("Notefy", style: TextStyle(color: Colors.grey, fontSize: 24),),
+              title: const Text("Evar Stationary", style: TextStyle(color: Colors.grey, fontSize: 24),),
               floating: false,
               pinned: false,
               snap: false,

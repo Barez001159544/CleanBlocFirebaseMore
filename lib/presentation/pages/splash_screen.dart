@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     getFirstTime();
-    Future.delayed(const Duration(seconds: 300), (){
+    Future.delayed(const Duration(seconds: 3), (){
       if(mounted) {
         routerHelper.goto(screen: firstTime!=null?const OnboardingScreen():const HomeScreen(), replace: true);
       }
@@ -48,7 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
             const SizedBox(height: 10,),
-            const AnimateText("Notefy", style: TextStyle(fontSize: 20), type: AnimateTextType.topLeftToBottomRight, isRepeat: false,),
+            const AnimateText("Evar Stationary", style: TextStyle(fontSize: 20), type: AnimateTextType.topLeftToBottomRight, isRepeat: false,),
             const Spacer(),
             const Text("EVAR WORLD OF STATIONARY", style: TextStyle(fontSize: 16, color: Colors.grey),),
             const SizedBox(height: 20,),
