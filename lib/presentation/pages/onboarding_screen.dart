@@ -74,19 +74,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         backgroundColor: WidgetStateProperty.all(themeData.scaffoldBackgroundColor),
                         shape: WidgetStateProperty.all(LinearBorder.none),
                       ),
-                      onPressed: () async{
-                        final userCredential = await signInWithGoogle();
-                        if (userCredential != null)
-                          print(userCredential);
-                        // hiveHelper.createOrUpdate("firstTime", true);
-                        // Navigator.of(context).pushReplacement(
-                        //     PageTransition(
-                        //       type: PageTransitionType.rightToLeft,
-                        //       duration: const Duration(milliseconds: 400),
-                        //       curve: Curves.easeIn,
-                        //       child: const HomeScreen(),
-                        //     ),
-                        // );
+                      onPressed: (){
+                        // final userCredential = await signInWithGoogle();
+                        // if (userCredential != null)
+                        //   print(userCredential);
+                        hiveHelper.createOrUpdate("firstTime", true);
+                        Navigator.of(context).pushReplacement(
+                            PageTransition(
+                              type: PageTransitionType.rightToLeft,
+                              duration: const Duration(milliseconds: 400),
+                              curve: Curves.easeIn,
+                              child: const HomeScreen(),
+                            ),
+                        );
                         },
                       child: Container(
                         margin: const EdgeInsets.fromLTRB(8, 4, 24, 8),

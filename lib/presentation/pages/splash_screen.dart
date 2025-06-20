@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     getFirstTime();
-    Future.delayed(const Duration(seconds: 3), (){
+    Future.delayed(const Duration(seconds: 300), (){
       if(mounted) {
         routerHelper.goto(screen: firstTime!=null?const OnboardingScreen():const HomeScreen(), replace: true);
       }
@@ -36,16 +36,21 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Spacer(),
-            SvgPicture.asset(
-              height: 100,
-              width: 100,
-              colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                "assets/images/note_logo.svg",
+            ClipRRect(
+              borderRadius: BorderRadius.all(
+                Radius.circular(35),
+              ),
+              child: SvgPicture.asset(
+                height: 100,
+                width: 100,
+                colorFilter: const ColorFilter.mode(Colors.grey, BlendMode.srcIn),
+                  "assets/images/note_logo.svg",
+              ),
             ),
             const SizedBox(height: 10,),
             const AnimateText("Notefy", style: TextStyle(fontSize: 20), type: AnimateTextType.topLeftToBottomRight, isRepeat: false,),
             const Spacer(),
-            const Text("NOTE YOUR LIFE", style: TextStyle(fontSize: 16, color: Colors.grey),),
+            const Text("EVAR WORLD OF STATIONARY", style: TextStyle(fontSize: 16, color: Colors.grey),),
             const SizedBox(height: 20,),
           ],
         ),
